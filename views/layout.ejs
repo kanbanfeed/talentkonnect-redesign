@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> | TalentKonnect</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo-section">
+                <ion-icon name="cube" style="color: #818cf8; font-size: 1.5rem;"></ion-icon>
+                TalentKonnect
+            </a>
+
+            <div class="nav-links">
+                <a href="/" class="nav-item">Home</a>
+                <a href="/dashboard" class="nav-item">Dashboard</a>
+                <a href="/apply-job" class="nav-item">Find Gigs</a>
+                <a href="/post-job" class="nav-item">Post Gig</a>
+                <a href="/messaging" class="nav-item">Messages</a>
+            </div>
+
+            <div class="nav-right">
+                <div class="icon-btn-header">
+                    <ion-icon name="notifications-outline" style="font-size: 1.3rem;"></ion-icon>
+                    <div class="notification-dot"></div>
+                </div>
+
+                <div class="profile-pill">
+                    <div class="user-info">
+                        <span class="user-name">Alex Doe</span>
+                        <span class="user-role">Talent</span>
+                    </div>
+                    <div class="user-avatar">AD</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="container">
+        <%- body %>
+    </main>
+
+    <script>
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-item');
+        
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

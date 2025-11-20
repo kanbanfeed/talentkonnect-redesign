@@ -1,0 +1,58 @@
+<div class="form-container">
+    <div style="text-align: center; margin-bottom: 30px;">
+        <h2 style="font-size: 2rem; margin-bottom: 10px;">Post a New Gig</h2>
+        <p style="color: var(--text-muted);">Create a task for the TalentKonnect community.</p>
+    </div>
+
+    <div class="card">
+        <form>
+            <div class="form-group">
+                <label class="form-label">Gig Title</label>
+                <input type="text" class="form-input" placeholder="e.g. React Frontend Developer needed">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Job Description</label>
+                <textarea class="form-textarea" rows="5" placeholder="Describe the requirements, deliverables, and expectations..."></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Reward (Credits)</label>
+                    <div style="position: relative;">
+                        <ion-icon name="diamond" style="position: absolute; left: 15px; top: 15px; color: #ec4899;"></ion-icon>
+                        <input type="number" class="form-input" placeholder="1000" style="padding-left: 40px;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-select">
+                        <option>Development</option>
+                        <option>Design</option>
+                        <option>Marketing</option>
+                        <option>Writing</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">Job Type</label>
+                    <select class="form-select">
+                        <option>Remote</option>
+                        <option>On-Site</option>
+                        <option>Hybrid</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Required Skills</label>
+                    <input type="text" class="form-input" placeholder="e.g. React, Node.js">
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 1.1rem; margin-top: 10px;">
+                Publish Gig
+            </button>
+        </form>
+    </div>
+</div>

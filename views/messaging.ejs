@@ -1,0 +1,91 @@
+<div class="chat-container">
+    <aside class="chat-sidebar">
+        <div class="chat-search">
+            <h2 style="margin-bottom: 15px;">Messages</h2>
+            <div style="position: relative;">
+                <ion-icon name="search-outline" style="position: absolute; left: 12px; top: 12px; color: #94a3b8;"></ion-icon>
+                <input type="text" placeholder="Search chats..." style="padding-left: 35px; border-radius: 25px;">
+            </div>
+        </div>
+
+        <div class="chat-list">
+            <div class="chat-user active">
+                <div class="avatar" style="background: #c7d2fe; display: grid; place-items: center; color: #4338ca; font-weight: 700;">FH
+                    <div class="online-status"></div>
+                </div>
+                <div style="flex: 1;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h4 style="font-size: 0.95rem;">FinCorp HR</h4>
+                        <span style="font-size: 0.7rem; color: #64748b;">2m</span>
+                    </div>
+                    <p style="font-size: 0.8rem; color: #64748b; margin-top: 2px;">Typing...</p>
+                </div>
+            </div>
+
+            <div class="chat-user">
+                <div class="avatar" style="background: #fbcfe8; display: grid; place-items: center; color: #be185d; font-weight: 700;">TT</div>
+                <div style="flex: 1;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <h4 style="font-size: 0.95rem;">TechFlow Team</h4>
+                        <span style="font-size: 0.7rem; color: #64748b;">1h</span>
+                    </div>
+                    <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 2px;">Project requirements sent.</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="chat-main">
+        <div class="chat-header">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="avatar" style="background: #c7d2fe; display: grid; place-items: center; color: #4338ca; width: 40px; height: 40px;">FH</div>
+                <div>
+                    <h3 style="font-size: 1rem; margin-bottom: 0;">FinCorp HR</h3>
+                    <div style="font-size: 0.75rem; color: #22c55e; display: flex; align-items: center; gap: 4px;">
+                        <div style="width: 6px; height: 6px; background: #22c55e; border-radius: 50%;"></div> Online
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-outline" style="padding: 8px; border: none;"><ion-icon name="call-outline" style="font-size: 1.2rem;"></ion-icon></button>
+                <button class="btn btn-outline" style="padding: 8px; border: none;"><ion-icon name="videocam-outline" style="font-size: 1.2rem;"></ion-icon></button>
+                <button class="btn btn-outline" style="padding: 8px; border: none;"><ion-icon name="ellipsis-vertical" style="font-size: 1.2rem;"></ion-icon></button>
+            </div>
+        </div>
+
+        <div class="messages-area">
+            <div style="text-align: center; color: #cbd5e1; font-size: 0.8rem; margin: 10px 0;">Today, 10:30 AM</div>
+            
+            <div class="msg-bubble msg-received">
+                Hi ! We reviewed your profile and loved your past work on UI Redesigns.
+            </div>
+            
+            <div class="msg-bubble msg-received">
+                Are you available for a quick gig? We need a dashboard revamp.
+            </div>
+
+            <div class="msg-bubble msg-sent">
+                Hello! Thank you for reaching out. Yes, I am currently open to new gigs.
+            </div>
+            
+            <div class="msg-bubble msg-sent">
+                What is the timeline you are looking at?
+            </div>
+
+            <div class="msg-bubble msg-received">
+                Ideally within 2 weeks. The budget is 5000 Credits.
+            </div>
+        </div>
+
+        <div class="chat-input-wrapper">
+            <div class="input-bar">
+                <ion-icon name="happy-outline" style="font-size: 1.5rem; color: #94a3b8; cursor: pointer;"></ion-icon>
+                <ion-icon name="attach-outline" style="font-size: 1.5rem; color: #94a3b8; cursor: pointer; margin-right: 5px;"></ion-icon>
+                <input type="text" placeholder="Type your message..." style="border: none; background: transparent; padding: 5px;">
+                <button class="btn btn-primary" style="border-radius: 50%; width: 45px; height: 45px; padding: 0; min-width: 45px;">
+                    <ion-icon name="send" style="font-size: 1.2rem; margin-left: 3px;"></ion-icon>
+                </button>
+            </div>
+        </div>
+    </main>
+</div>

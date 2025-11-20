@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        /* Hide content by default until we verify membership */
+        #dashboard-content { display: none; }
+        
+        /* Simple Loading Screen Styles */
+        #loading-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #f8fafc; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 9999;
+        }
+        .spinner {
+            width: 40px; height: 40px; border: 4px solid #e2e8f0;
+            border-top: 4px solid #4f46e5; border-radius: 50%;
+            animation: spin 1s linear infinite; margin-bottom: 15px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* The "Powered By" Banner Style */
+        .access-banner {
+            background: #ecfdf5; border: 1px solid #10b981; color: #065f46;
+            padding: 10px 15px; border-radius: 8px; margin-bottom: 20px;
+            font-size: 0.9rem; display: flex; align-items: center; gap: 8px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <h3 style="color: #475569;">Verifying Crowbar Membership...</h3>
+    </div>
+
+    <div id="dashboard-content" class="dashboard-layout">
+        
+        <aside class="sidebar-card">
+            <div class="sidebar-header">
+                <div style="width: 80px; height: 80px; background: #e0e7ff; color: #4f46e5; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 700;">
+                    AD
+                </div>
+                <h3 style="margin-bottom: 5px;">Alex Doe</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Talent Level 5</p>
+            </div>
+    
+            <nav>
+                <a href="/dashboard" class="menu-link active">
+                    <ion-icon name="grid-outline" style="font-size: 1.2rem;"></ion-icon> Overview
+                </a>
+                <a href="#" class="menu-link">
+                    <ion-icon name="wallet-outline" style="font-size: 1.2rem;"></ion-icon> My Wallet
+                </a>
+                <a href="/apply-job" class="menu-link">
+                    <ion-icon name="briefcase-outline" style="font-size: 1.2rem;"></ion-icon> Find Gigs
+                </a>
+                <a href="/messaging" class="menu-link">
+                    <ion-icon name="chatbubble-ellipses-outline" style="font-size: 1.2rem;"></ion-icon> Messages
+                </a>
+                <a href="#" onclick="logout()" class="menu-link" style="color: #ef4444;">
+                    <ion-icon name="log-out-outline" style="font-size: 1.2rem;"></ion-icon> Logout
+                </a>
+            </nav>
+        </aside>
+    
+        <main>
+            <div style="margin-bottom: 30px;">
+                <h2 style="font-size: 1.8rem; margin-bottom: 5px;">Dashboard</h2>
+                <p style="color: var(--text-muted);">Welcome back! Here is your daily summary.</p>
+            </div>
+
+            <div class="access-banner">
+                <ion-icon name="checkmark-circle" style="font-size: 1.2rem;"></ion-icon>
+                Access granted — powered by Crowbar Membership
+            </div>
+    
+            <div class="stats-grid">
+                <div class="stat-box" style="border-bottom: 4px solid #4f46e5;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <span style="font-weight: 700; color: #94a3b8; font-size: 0.8rem;">TOTAL CREDITS</span>
+                        <ion-icon name="diamond" style="color: #4f46e5;"></ion-icon>
+                    </div>
+                    <div style="font-size: 2rem; font-weight: 800;"><%= user.credits %></div>
+                </div>
+    
+                <div class="stat-box" style="border-bottom: 4px solid #10b981;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <span style="font-weight: 700; color: #94a3b8; font-size: 0.8rem;">WALLET BALANCE</span>
+                        <ion-icon name="cash" style="color: #10b981;"></ion-icon>
+                    </div>
+                    <div style="font-size: 2rem; font-weight: 800;">$<%= user.wallet %></div>
+                </div>
+    
+                <div class="stat-box" style="border-bottom: 4px solid #ec4899;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                        <span style="font-weight: 700; color: #94a3b8; font-size: 0.8rem;">PENDING GIGS</span>
+                        <ion-icon name="time" style="color: #ec4899;"></ion-icon>
+                    </div>
+                    <div style="font-size: 2rem; font-weight: 800;">2</div>
+                </div>
+            </div>
+    
+            <h3 style="margin-bottom: 15px; font-size: 1.1rem;">Recent Activity</h3>
+            <div style="background: white; border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                <% jobs.forEach(job => { %>
+                    <div class="dash-job-item">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div style="width: 45px; height: 45px; background: #f1f5f9; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #64748b;">
+                                <%= job.company[0] %>
+                            </div>
+                            <div>
+                                <h4 style="font-size: 1rem; margin-bottom: 2px;"><%= job.title %></h4>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);"><%= job.company %> • <%= job.type %></span>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <span style="background: #eef2ff; color: #4f46e5; padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700;">
+                                <%= job.reward %>
+                            </span>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const SUPABASE_URL = 'https://zfxnhbymlhvukeqmsyhj.supabase.co'; 
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpmeG5oYnltbGh2dWtlcW1zeWhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4MTIyMTIsImV4cCI6MjA3NzM4ODIxMn0.kKB1RsLvXJuROPlBY5bWeBzTWDGGe_UTouWkfSc7RXs'; 
+        const sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function checkMembership() {
+            // 1. Get User from Local Storage
+            const userStr = localStorage.getItem('crowbar_user');
+            if (!userStr) {
+                window.location.href = '/login';
+                return;
+            }
+
+            const user = JSON.parse(userStr);
+            const userEmail = user.email;
+            
+            console.log("Checking membership for:", userEmail);
+
+            // 2. FETCH MEMBERSHIP TIER FROM SUPABASE
+            // We query the 'users' table as requested
+            const { data: userData, error } = await sbClient
+                .from("users")
+                .select("membership_tier")
+                .eq("email", userEmail)
+                .single();
+
+            if (error) {
+                console.error("DB Error:", error);
+                alert("Could not verify membership. Please contact support.");
+                window.location.href = '/login';
+                return;
+            }
+
+            // 3. DEFINE ACCESS RULES
+            const validTiers = ["discount", "pro", "basic", "elite"];
+            
+            // 4. CHECK ACCESS
+            // We check if the user's tier exists in the allowed list
+            if (userData && validTiers.includes(userData.membership_tier)) {
+                // --- SUCCESS ---
+                console.log("Access Granted. Tier:", userData.membership_tier);
+                
+                // Hide loader, Show content
+                document.getElementById('loading-screen').style.display = 'none';
+                document.getElementById('dashboard-content').style.display = 'flex';
+            } else {
+                // --- BLOCKED ---
+                console.warn("Access Denied. Tier:", userData ? userData.membership_tier : 'None');
+                alert("Access Denied: You need an active Crowbar Membership (Basic, Pro, Elite) to view this page.");
+                
+                // Redirect back to login or upgrade page
+                window.location.href = '/login'; 
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('crowbar_session');
+            localStorage.removeItem('crowbar_user');
+            window.location.href = '/login';
+        }
+
+        // Run check immediately on load
+        window.onload = checkMembership;
+    </script>
+</body>
+</html>
