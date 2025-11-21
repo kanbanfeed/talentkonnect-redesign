@@ -1,195 +1,241 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        /* Hide content by default until we verify membership */
-        #dashboard-content { display: none; }
+<style>
+    /* Layout */
+    .dashboard-wrapper {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 20px 60px;
+    }
+
+    /* 1. HERO WELCOME SECTION */
+    .hero-welcome {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 40px;
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        background-image: radial-gradient(circle at top right, #fdfbf7 0%, #ffffff 40%);
+    }
+
+    .hero-title { font-size: 2rem; font-weight: 800; color: #111; letter-spacing: -1px; margin-bottom: 5px; }
+    .hero-sub { color: #6b7280; font-size: 1.1rem; }
+
+    .btn-find-work {
+        background: #111;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 30px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex; align-items: center; gap: 8px;
+        transition: 0.3s;
+    }
+    .btn-find-work:hover { background: #4f46e5; color: white; transform: translateY(-2px); }
+
+    /* 2. STATS GRID */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+        margin-bottom: 50px;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 25px;
+        border-radius: 16px;
+        border: 1px solid #e5e7eb;
+        transition: 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+    .stat-card:hover { border-color: #4f46e5; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+
+    /* Colorful top borders for visual distinction */
+    .card-green { border-top: 4px solid #10b981; }
+    .card-gold { border-top: 4px solid #f59e0b; }
+    .card-blue { border-top: 4px solid #4f46e5; }
+
+    .stat-icon-box {
+        width: 45px; height: 45px;
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center;
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+    }
+
+    .icon-green { background: #ecfdf5; color: #10b981; }
+    .icon-gold { background: #fffbeb; color: #f59e0b; }
+    .icon-blue { background: #eef2ff; color: #4f46e5; }
+
+    .stat-label { font-size: 0.8rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-value { font-size: 2.2rem; font-weight: 800; color: #111; margin: 5px 0; letter-spacing: -1px; }
+    .stat-hint { font-size: 0.85rem; color: #9ca3af; display: flex; align-items: center; gap: 5px; }
+
+    /* 3. ACTIVITY TABLE */
+    .activity-section h4 { font-weight: 700; margin-bottom: 20px; color: #111; }
+    
+    .activity-table {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    .activity-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        padding: 20px 30px;
+        border-bottom: 1px solid #f3f4f6;
+        align-items: center;
+    }
+    .activity-row:last-child { border-bottom: none; }
+    .activity-header { background: #f9fafb; font-weight: 600; font-size: 0.85rem; color: #6b7280; text-transform: uppercase; }
+    
+    .job-title { font-weight: 600; color: #111; }
+    .job-company { font-size: 0.85rem; color: #6b7280; }
+    
+    .status-badge {
+        padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
+        display: inline-block;
+    }
+    .status-pending { background: #fff7ed; color: #c2410c; }
+
+    /* Loading */
+    #loading-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: white; z-index: 2000; display: flex; align-items: center; justify-content: center; }
+
+    /* Mobile */
+    @media(max-width: 768px) {
+        .stats-grid { grid-template-columns: 1fr; }
+        .hero-welcome { flex-direction: column; text-align: center; gap: 20px; }
+        .activity-row { grid-template-columns: 1fr; gap: 10px; text-align: center; }
+    }
+</style>
+
+<div id="loading-screen">
+    <div class="spinner-border text-primary" role="status"></div>
+</div>
+
+<div id="dashboard-ui" style="display: none;">
+    <div class="dashboard-wrapper">
         
-        /* Simple Loading Screen Styles */
-        #loading-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #f8fafc; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; z-index: 9999;
-        }
-        .spinner {
-            width: 40px; height: 40px; border: 4px solid #e2e8f0;
-            border-top: 4px solid #4f46e5; border-radius: 50%;
-            animation: spin 1s linear infinite; margin-bottom: 15px;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        /* The "Powered By" Banner Style */
-        .access-banner {
-            background: #ecfdf5; border: 1px solid #10b981; color: #065f46;
-            padding: 10px 15px; border-radius: 8px; margin-bottom: 20px;
-            font-size: 0.9rem; display: flex; align-items: center; gap: 8px;
-            font-weight: 600;
-        }
-    </style>
-</head>
-<body>
+        <div class="hero-welcome">
+            <div>
+                <div class="hero-title">Welcome back, <span id="user-name">User</span></div>
+                <div class="hero-sub">Your professional overview is ready.</div>
+            </div>
+            <a href="/apply-job" class="btn-find-work">
+                <i class="bi bi-search"></i> Find New Work
+            </a>
+        </div>
 
-    <div id="loading-screen">
-        <div class="spinner"></div>
-        <h3 style="color: #475569;">Verifying Crowbar Membership...</h3>
-    </div>
-
-    <div id="dashboard-content" class="dashboard-layout">
-        
-        <aside class="sidebar-card">
-            <div class="sidebar-header">
-                <div style="width: 80px; height: 80px; background: #e0e7ff; color: #4f46e5; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 700;">
-                    AD
+        <div class="stats-grid">
+            <div class="stat-card card-green">
+                <div class="d-flex justify-content-between">
+                    <div class="stat-icon-box icon-green"><i class="bi bi-wallet2"></i></div>
+                    <i class="bi bi-three-dots text-muted" style="cursor: pointer;"></i>
                 </div>
-                <h3 style="margin-bottom: 5px;">Alex Doe</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">Talent Level 5</p>
-            </div>
-    
-            <nav>
-                <a href="/dashboard" class="menu-link active">
-                    <ion-icon name="grid-outline" style="font-size: 1.2rem;"></ion-icon> Overview
-                </a>
-                <a href="#" class="menu-link">
-                    <ion-icon name="wallet-outline" style="font-size: 1.2rem;"></ion-icon> My Wallet
-                </a>
-                <a href="/apply-job" class="menu-link">
-                    <ion-icon name="briefcase-outline" style="font-size: 1.2rem;"></ion-icon> Find Gigs
-                </a>
-                <a href="/messaging" class="menu-link">
-                    <ion-icon name="chatbubble-ellipses-outline" style="font-size: 1.2rem;"></ion-icon> Messages
-                </a>
-                <a href="#" onclick="logout()" class="menu-link" style="color: #ef4444;">
-                    <ion-icon name="log-out-outline" style="font-size: 1.2rem;"></ion-icon> Logout
-                </a>
-            </nav>
-        </aside>
-    
-        <main>
-            <div style="margin-bottom: 30px;">
-                <h2 style="font-size: 1.8rem; margin-bottom: 5px;">Dashboard</h2>
-                <p style="color: var(--text-muted);">Welcome back! Here is your daily summary.</p>
+                <div class="stat-label">Total Earnings</div>
+                <div class="stat-value" id="wallet-bal">...</div>
+                <div class="stat-hint"><i class="bi bi-arrow-up-right-circle-fill text-success"></i> Available for withdrawal</div>
             </div>
 
-            <div class="access-banner">
-                <ion-icon name="checkmark-circle" style="font-size: 1.2rem;"></ion-icon>
-                Access granted — powered by Crowbar Membership
-            </div>
-    
-            <div class="stats-grid">
-                <div class="stat-box" style="border-bottom: 4px solid #4f46e5;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                        <span style="font-weight: 700; color: #94a3b8; font-size: 0.8rem;">TOTAL CREDITS</span>
-                        <ion-icon name="diamond" style="color: #4f46e5;"></ion-icon>
-                    </div>
-                    <div style="font-size: 2rem; font-weight: 800;"><%= user.credits %></div>
+            <div class="stat-card card-gold">
+                <div class="d-flex justify-content-between">
+                    <div class="stat-icon-box icon-gold"><i class="bi bi-lightning-charge-fill"></i></div>
+                    <i class="bi bi-three-dots text-muted" style="cursor: pointer;"></i>
                 </div>
-    
-                <div class="stat-box" style="border-bottom: 4px solid #10b981;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                        <span style="font-weight: 700; color: #94a3b8; font-size: 0.8rem;">WALLET BALANCE</span>
-                        <ion-icon name="cash" style="color: #10b981;"></ion-icon>
-                    </div>
-                    <div style="font-size: 2rem; font-weight: 800;">$<%= user.wallet %></div>
-                </div>
-    
-                <div class="stat-box" style="border-bottom: 4px solid #ec4899;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                        <span style="font-weight: 700; color: #94a3b8; font-size: 0.8rem;">PENDING GIGS</span>
-                        <ion-icon name="time" style="color: #ec4899;"></ion-icon>
-                    </div>
-                    <div style="font-size: 2rem; font-weight: 800;">2</div>
-                </div>
+                <div class="stat-label">Connect Credits</div>
+                <div class="stat-value" id="credits-bal">...</div>
+                <div class="stat-hint">Refreshes monthly</div>
             </div>
-    
-            <h3 style="margin-bottom: 15px; font-size: 1.1rem;">Recent Activity</h3>
-            <div style="background: white; border-radius: var(--radius-lg); border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
-                <% jobs.forEach(job => { %>
-                    <div class="dash-job-item">
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <div style="width: 45px; height: 45px; background: #f1f5f9; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #64748b;">
-                                <%= job.company[0] %>
-                            </div>
-                            <div>
-                                <h4 style="font-size: 1rem; margin-bottom: 2px;"><%= job.title %></h4>
-                                <span style="font-size: 0.8rem; color: var(--text-muted);"><%= job.company %> • <%= job.type %></span>
-                            </div>
-                        </div>
-                        <div style="text-align: right;">
-                            <span style="background: #eef2ff; color: #4f46e5; padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700;">
-                                <%= job.reward %>
-                            </span>
-                        </div>
-                    </div>
-                <% }) %>
+
+            <div class="stat-card card-blue">
+                <div class="d-flex justify-content-between">
+                    <div class="stat-icon-box icon-blue"><i class="bi bi-patch-check-fill"></i></div>
+                    <i class="bi bi-three-dots text-muted" style="cursor: pointer;"></i>
+                </div>
+                <div class="stat-label">Membership Status</div>
+                <div class="stat-value" style="font-size: 1.8rem; margin-top: 10px;">Pro Plan</div>
+                <div class="stat-hint">Next billing: Dec 01</div>
             </div>
-        </main>
-    </div>
+        </div>
 
-    <script>
-        // --- CONFIGURATION ---
-        const SUPABASE_URL = 'https://zfxnhbymlhvukeqmsyhj.supabase.co'; 
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpmeG5oYnltbGh2dWtlcW1zeWhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4MTIyMTIsImV4cCI6MjA3NzM4ODIxMn0.kKB1RsLvXJuROPlBY5bWeBzTWDGGe_UTouWkfSc7RXs'; 
-        const sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        async function checkMembership() {
-            // 1. Get User from Local Storage
-            const userStr = localStorage.getItem('crowbar_user');
-            if (!userStr) {
-                window.location.href = '/login';
-                return;
-            }
-
-            const user = JSON.parse(userStr);
-            const userEmail = user.email;
+        <div class="activity-section">
+            <h4>Recent Applications</h4>
             
-            console.log("Checking membership for:", userEmail);
+            <div class="activity-table">
+                <div class="activity-row activity-header d-none d-md-grid">
+                    <div>Job / Company</div>
+                    <div class="text-center">Applied Date</div>
+                    <div class="text-end">Status</div>
+                </div>
 
-            // 2. FETCH MEMBERSHIP TIER FROM SUPABASE
-            // We query the 'users' table as requested
-            const { data: userData, error } = await sbClient
-                .from("users")
-                .select("membership_tier")
-                .eq("email", userEmail)
-                .single();
+                <div class="activity-row">
+                    <div>
+                        <div class="job-title">Senior Frontend Developer</div>
+                        <div class="job-company">TechFlow Inc.</div>
+                    </div>
+                    <div class="text-center text-muted small">Nov 20, 2025</div>
+                    <div class="text-end">
+                        <span class="status-badge status-pending">In Review</span>
+                    </div>
+                </div>
 
-            if (error) {
-                console.error("DB Error:", error);
-                alert("Could not verify membership. Please contact support.");
-                window.location.href = '/login';
-                return;
-            }
-
-            // 3. DEFINE ACCESS RULES
-            const validTiers = ["discount", "pro", "basic", "elite"];
-            
-            // 4. CHECK ACCESS
-            // We check if the user's tier exists in the allowed list
-            if (userData && validTiers.includes(userData.membership_tier)) {
-                // --- SUCCESS ---
-                console.log("Access Granted. Tier:", userData.membership_tier);
+                <div class="activity-row">
+                    <div>
+                        <div class="job-title">UI/UX Designer</div>
+                        <div class="job-company">Creative Studio</div>
+                    </div>
+                    <div class="text-center text-muted small">Nov 18, 2025</div>
+                    <div class="text-end">
+                        <span class="status-badge status-pending">Pending</span>
+                    </div>
+                </div>
                 
-                // Hide loader, Show content
-                document.getElementById('loading-screen').style.display = 'none';
-                document.getElementById('dashboard-content').style.display = 'flex';
-            } else {
-                // --- BLOCKED ---
-                console.warn("Access Denied. Tier:", userData ? userData.membership_tier : 'None');
-                alert("Access Denied: You need an active Crowbar Membership (Basic, Pro, Elite) to view this page.");
-                
-                // Redirect back to login or upgrade page
-                window.location.href = '/login'; 
-            }
-        }
+                </div>
+        </div>
 
-        function logout() {
-            localStorage.removeItem('crowbar_session');
-            localStorage.removeItem('crowbar_user');
+    </div>
+</div>
+
+<script>
+    const SB_URL = 'https://zfxnhbymlhvukeqmsyhj.supabase.co'; 
+    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpmeG5oYnltbGh2dWtlcW1zeWhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4MTIyMTIsImV4cCI6MjA3NzM4ODIxMn0.kKB1RsLvXJuROPlBY5bWeBzTWDGGe_UTouWkfSc7RXs'; 
+    const client = supabase.createClient(SB_URL, SB_KEY);
+
+    async function initDashboard() {
+        const sessionStr = localStorage.getItem('crowbar_session');
+        const userStr = localStorage.getItem('crowbar_user');
+
+        if (!sessionStr || !userStr) {
             window.location.href = '/login';
+            return;
         }
 
-        // Run check immediately on load
-        window.onload = checkMembership;
-    </script>
-</body>
-</html>
+        const user = JSON.parse(userStr);
+        
+        const { data: profile, error } = await client
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single();
+
+        if (profile) {
+            document.getElementById('user-name').innerText = profile.full_name || 'User';
+            document.getElementById('wallet-bal').innerText = '$' + profile.wallet_balance;
+            document.getElementById('credits-bal').innerText = profile.credits;
+        } else {
+            document.getElementById('wallet-bal').innerText = '$0';
+            document.getElementById('credits-bal').innerText = '0';
+        }
+
+        document.getElementById('loading-screen').style.display = 'none';
+        document.getElementById('dashboard-ui').style.display = 'block';
+    }
+
+    initDashboard();
+</script>

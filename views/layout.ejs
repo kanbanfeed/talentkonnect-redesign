@@ -6,6 +6,7 @@
     <title><%= title %> | TalentKonnect</title>
     <link rel="stylesheet" href="/css/style.css">
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -26,15 +27,17 @@
             <div class="nav-right">
                 <div class="icon-btn-header">
                     <ion-icon name="notifications-outline" style="font-size: 1.3rem;"></ion-icon>
-                    <div class="notification-dot"></div>
+                    <div class="notification-dot" style="border-color: #1e1b4b;"></div>
                 </div>
 
-                <div class="profile-pill">
+                <div class="profile-pill" id="header-profile-pill" style="display: flex;">
                     <div class="user-info">
-                        <span class="user-name">Alex Doe</span>
-                        <span class="user-role">Talent</span>
+                        <span class="user-name" id="nav-user-name">Loading...</span>
+                        <span class="user-role" id="nav-user-role">...</span>
                     </div>
-                    <div class="user-avatar">AD</div>
+                    <div class="user-avatar" id="nav-user-avatar">
+                        --
+                    </div>
                 </div>
             </div>
         </div>
@@ -45,12 +48,53 @@
     </main>
 
     <script>
-        const currentPath = window.location.pathname;
-        const navLinks = document.querySelectorAll('.nav-item');
-        
-        navLinks.forEach(link => {
-            if (link.getAttribute('href') === currentPath) {
-                link.classList.add('active');
+        document.addEventListener('DOMContentLoaded', async () => {
+            
+            // --- 1. ACTIVE MENU HIGHLIGHTER ---
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.nav-item');
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                // Check if href matches current path (handling trailing slashes)
+                if (link.getAttribute('href') === currentPath || (currentPath === '/' && link.getAttribute('href') === '/')) {
+                    link.classList.add('active');
+                }
+            });
+
+            // --- 2. HEADER DATA FETCH ---
+            const sessionStr = localStorage.getItem('crowbar_session');
+            const userStr = localStorage.getItem('crowbar_user');
+            
+            // If logged in, fetch data for the Header
+            if (sessionStr && userStr) {
+                const user = JSON.parse(userStr);
+                const SB_URL = 'https://zfxnhbymlhvukeqmsyhj.supabase.co';
+                const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpmeG5oYnltbGh2dWtlcW1zeWhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4MTIyMTIsImV4cCI6MjA3NzM4ODIxMn0.kKB1RsLvXJuROPlBY5bWeBzTWDGGe_UTouWkfSc7RXs'; // <--- PASTE YOUR KEY HERE
+                const client = supabase.createClient(SB_URL, SB_KEY);
+
+                const { data: profile } = await client
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', user.id)
+                    .single();
+
+                if (profile) {
+                    // Update Header Name
+                    document.getElementById('nav-user-name').innerText = profile.full_name || 'User';
+                    document.getElementById('nav-user-role').innerText = 'Talent'; // Or profile.role
+                    
+                    // Update Header Avatar (Initials)
+                    const initials = (profile.full_name || 'U').charAt(0).toUpperCase();
+                    document.getElementById('nav-user-avatar').innerText = initials;
+                } else {
+                    // Fallback if profile not found yet
+                    document.getElementById('nav-user-name').innerText = user.email.split('@')[0];
+                }
+            } else {
+                // Not logged in? Hide profile or show Login button
+                document.getElementById('header-profile-pill').style.opacity = '0.5';
+                document.getElementById('nav-user-name').innerText = "Guest";
             }
         });
     </script>

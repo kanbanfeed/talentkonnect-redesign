@@ -1,91 +1,332 @@
-<div class="chat-container">
-    <aside class="chat-sidebar">
-        <div class="chat-search">
-            <h2 style="margin-bottom: 15px;">Messages</h2>
-            <div style="position: relative;">
-                <ion-icon name="search-outline" style="position: absolute; left: 12px; top: 12px; color: #94a3b8;"></ion-icon>
-                <input type="text" placeholder="Search chats..." style="padding-left: 35px; border-radius: 25px;">
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Messages | TalentKonnect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        /* --- THEME VARIABLES --- */
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #eef2ff;
+            --bg-gray: #f3f4f6;
+            --border-color: #e5e7eb;
+            --text-dark: #111827;
+            --text-muted: #6b7280;
+        }
+
+        /* --- GLOBAL RESETS --- */
+        /* Adjusted to work WITH the main website header */
+        body { 
+            background: white; 
+            overflow: hidden; /* Prevents double scrollbars */
+        }
+        
+        /* --- LAYOUT --- */
+        /* We calculate height to fit exactly under the navbar (approx 76px) */
+        .messenger-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            height: calc(100vh - 76px); 
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            background: white;
+            height: 100%;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-title { font-size: 1.2rem; font-weight: 800; color: var(--text-dark); margin: 0; }
+
+        .search-box { padding: 15px; }
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            background: var(--bg-gray);
+            font-size: 0.9rem;
+        }
+
+        .contact-list { flex: 1; overflow-y: auto; }
+        
+        .contact-item {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            border-left: 4px solid transparent;
+        }
+
+        .contact-item:hover { background: var(--bg-gray); }
+        .contact-item.active { background: var(--primary-light); border-left-color: var(--primary); }
+
+        .avatar {
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            background: #e0e7ff;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .contact-info h6 { margin: 0; font-size: 0.95rem; font-weight: 600; color: var(--text-dark); }
+        .contact-info p { margin: 0; font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+
+        /* --- CHAT AREA --- */
+        .chat-area {
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            height: 100%;
+        }
+
+        /* Header */
+        .chat-header {
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            height: 70px;
+        }
+        .status-indicator { font-size: 0.75rem; color: #10b981; font-weight: 500; }
+
+        /* Messages Stream */
+        .messages-stream {
+            flex: 1;
+            padding: 30px;
+            background: var(--bg-gray);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .time-divider { text-align: center; font-size: 0.75rem; color: #9ca3af; margin: 10px 0; }
+
+        .message-row { display: flex; flex-direction: column; max-width: 70%; }
+        .message-row.received { align-self: flex-start; }
+        .message-row.sent { align-self: flex-end; align-items: flex-end; }
+
+        .bubble {
+            padding: 12px 18px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+
+        .received .bubble {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-bottom-left-radius: 2px;
+            color: var(--text-dark);
+        }
+
+        .sent .bubble {
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+
+        .msg-time {
+            font-size: 0.7rem;
+            color: #9ca3af;
+            margin-top: 5px;
+            padding: 0 5px;
+        }
+
+        /* --- INPUT AREA --- */
+        .input-area {
+            padding: 20px 30px 30px 30px; /* Padding bottom to sit nicely */
+            border-top: 1px solid var(--border-color);
+            background: white;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .attachment-btn { border: none; background: none; color: #6b7280; font-size: 1.2rem; cursor: pointer; }
+        
+        .message-input {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 30px;
+            border: 1px solid #e2e8f0;
+            background: #f9fafb;
+            outline: none;
+            transition: 0.3s;
+            font-size: 0.95rem;
+        }
+        .message-input:focus { background: white; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+
+        .send-btn {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+        }
+        .send-btn:hover { transform: scale(1.05); background: #4338ca; }
+
+        @media (max-width: 768px) {
+            .messenger-layout { grid-template-columns: 1fr; height: calc(100vh - 60px); }
+            .sidebar { display: none; } 
+            .chat-area { height: 100%; }
+            .input-area { padding-bottom: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="messenger-layout">
+    
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Messages</h2>
+            <i class="bi bi-pencil-square fs-5 text-primary" style="cursor: pointer;"></i>
+        </div>
+        
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="Search conversations...">
         </div>
 
-        <div class="chat-list">
-            <div class="chat-user active">
-                <div class="avatar" style="background: #c7d2fe; display: grid; place-items: center; color: #4338ca; font-weight: 700;">FH
-                    <div class="online-status"></div>
-                </div>
-                <div style="flex: 1;">
-                    <div style="display: flex; justify-content: space-between;">
-                        <h4 style="font-size: 0.95rem;">FinCorp HR</h4>
-                        <span style="font-size: 0.7rem; color: #64748b;">2m</span>
-                    </div>
-                    <p style="font-size: 0.8rem; color: #64748b; margin-top: 2px;">Typing...</p>
+        <div class="contact-list">
+            <div class="contact-item active">
+                <div class="avatar">TC</div>
+                <div class="contact-info">
+                    <h6>TechCorp HR</h6>
+                    <p>Great. Are you available for...</p>
                 </div>
             </div>
-
-            <div class="chat-user">
-                <div class="avatar" style="background: #fbcfe8; display: grid; place-items: center; color: #be185d; font-weight: 700;">TT</div>
-                <div style="flex: 1;">
-                    <div style="display: flex; justify-content: space-between;">
-                        <h4 style="font-size: 0.95rem;">TechFlow Team</h4>
-                        <span style="font-size: 0.7rem; color: #64748b;">1h</span>
-                    </div>
-                    <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 2px;">Project requirements sent.</p>
+            <div class="contact-item">
+                <div class="avatar" style="background: #f0fdf4; color: #16a34a;">GD</div>
+                <div class="contact-info">
+                    <h6>GreenDesign Studio</h6>
+                    <p>Files received. Thanks!</p>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="avatar" style="background: #fef2f2; color: #ef4444;">MJ</div>
+                <div class="contact-info">
+                    <h6>Mark Johnson</h6>
+                    <p>Can we reschedule?</p>
                 </div>
             </div>
         </div>
     </aside>
 
-    <main class="chat-main">
+    <main class="chat-area">
         <div class="chat-header">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <div class="avatar" style="background: #c7d2fe; display: grid; place-items: center; color: #4338ca; width: 40px; height: 40px;">FH</div>
+            <div class="d-flex align-items-center gap-3">
+                <div class="avatar">TC</div>
                 <div>
-                    <h3 style="font-size: 1rem; margin-bottom: 0;">FinCorp HR</h3>
-                    <div style="font-size: 0.75rem; color: #22c55e; display: flex; align-items: center; gap: 4px;">
-                        <div style="width: 6px; height: 6px; background: #22c55e; border-radius: 50%;"></div> Online
-                    </div>
+                    <h6 class="mb-0 fw-bold">TechCorp HR</h6>
+                    <div class="status-indicator">● Online</div>
                 </div>
             </div>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn btn-outline" style="padding: 8px; border: none;"><ion-icon name="call-outline" style="font-size: 1.2rem;"></ion-icon></button>
-                <button class="btn btn-outline" style="padding: 8px; border: none;"><ion-icon name="videocam-outline" style="font-size: 1.2rem;"></ion-icon></button>
-                <button class="btn btn-outline" style="padding: 8px; border: none;"><ion-icon name="ellipsis-vertical" style="font-size: 1.2rem;"></ion-icon></button>
+            <div class="d-flex gap-3 text-muted">
+                <i class="bi bi-telephone fs-5" style="cursor: pointer;"></i>
+                <i class="bi bi-camera-video fs-5" style="cursor: pointer;"></i>
+                <i class="bi bi-three-dots-vertical fs-5" style="cursor: pointer;"></i>
+            </div>
+        </div>
+        <div class="messages-stream" id="messageBox">
+            <div class="time-divider">Today</div>
+
+            <div class="message-row received">
+                <div class="bubble">
+                    Hi Alex, we reviewed your portfolio on TalentKonnect. It looks impressive!
+                </div>
+                <div class="msg-time">10:30 AM</div>
+            </div>
+
+            <div class="message-row sent">
+                <div class="bubble">
+                    Thanks! I appreciate that. I'm very interested in the Senior Dev role.
+                </div>
+                <div class="msg-time">10:32 AM</div>
+            </div>
+
+            <div class="message-row received">
+                <div class="bubble">
+                    Great. Are you available for a quick sync tomorrow at 10 AM EST?
+                </div>
+                <div class="msg-time">10:35 AM</div>
             </div>
         </div>
 
-        <div class="messages-area">
-            <div style="text-align: center; color: #cbd5e1; font-size: 0.8rem; margin: 10px 0;">Today, 10:30 AM</div>
-            
-            <div class="msg-bubble msg-received">
-                Hi ! We reviewed your profile and loved your past work on UI Redesigns.
-            </div>
-            
-            <div class="msg-bubble msg-received">
-                Are you available for a quick gig? We need a dashboard revamp.
-            </div>
-
-            <div class="msg-bubble msg-sent">
-                Hello! Thank you for reaching out. Yes, I am currently open to new gigs.
-            </div>
-            
-            <div class="msg-bubble msg-sent">
-                What is the timeline you are looking at?
-            </div>
-
-            <div class="msg-bubble msg-received">
-                Ideally within 2 weeks. The budget is 5000 Credits.
-            </div>
-        </div>
-
-        <div class="chat-input-wrapper">
-            <div class="input-bar">
-                <ion-icon name="happy-outline" style="font-size: 1.5rem; color: #94a3b8; cursor: pointer;"></ion-icon>
-                <ion-icon name="attach-outline" style="font-size: 1.5rem; color: #94a3b8; cursor: pointer; margin-right: 5px;"></ion-icon>
-                <input type="text" placeholder="Type your message..." style="border: none; background: transparent; padding: 5px;">
-                <button class="btn btn-primary" style="border-radius: 50%; width: 45px; height: 45px; padding: 0; min-width: 45px;">
-                    <ion-icon name="send" style="font-size: 1.2rem; margin-left: 3px;"></ion-icon>
-                </button>
-            </div>
+        <div class="input-area">
+            <button class="attachment-btn"><i class="bi bi-paperclip"></i></button>
+            <input type="text" id="msgInput" class="message-input" placeholder="Type a message..." onkeypress="handleKey(event)">
+            <button class="send-btn" onclick="sendMessage()">
+                <i class="bi bi-send-fill"></i>
+            </button>
         </div>
     </main>
+
 </div>
+
+<script>
+    const msgBox = document.getElementById('messageBox');
+    msgBox.scrollTop = msgBox.scrollHeight;
+
+    function sendMessage() {
+        const input = document.getElementById('msgInput');
+        const text = input.value.trim();
+
+        if(text) {
+            const now = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message-row sent';
+            msgDiv.innerHTML = `
+                <div class="bubble">${text}</div>
+                <div class="msg-time">${now}</div>
+            `;
+
+            msgBox.appendChild(msgDiv);
+            msgBox.scrollTop = msgBox.scrollHeight;
+            input.value = '';
+
+            setTimeout(() => {
+                const replyDiv = document.createElement('div');
+                replyDiv.className = 'message-row received';
+                replyDiv.innerHTML = `
+                    <div class="bubble">Got it! Looking forward to it.</div>
+                    <div class="msg-time">${now}</div>
+                `;
+                msgBox.appendChild(replyDiv);
+                msgBox.scrollTop = msgBox.scrollHeight;
+            }, 2000);
+        }
+    }
+
+    function handleKey(e) {
+        if(e.key === 'Enter') sendMessage();
+    }
+</script>
+</body>
+</html>
