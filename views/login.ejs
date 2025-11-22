@@ -1,210 +1,104 @@
 <style>
-    /* Force hide the navigation bar on this page */
-    nav.navbar, .navbar-custom, header { 
-        display: none !important; 
-    }
+    /* FORCE HIDE ANY NAV BARS */
+    nav, header, .navbar, .navbar-custom { display: none !important; }
+
+    .login-wrapper { display: flex; min-height: 100vh; background: white; }
     
-    /* Remove the top padding usually reserved for the header */
-    body { 
-        padding-top: 0 !important; 
-        background-color: white; /* Ensure background is clean */
-    }
-
-    /* --- SPLIT LOGIN LAYOUT --- */
-    .login-page-wrapper {
-        display: flex;
-        min-height: 100vh;
-        background: white;
-        overflow: hidden; /* Prevent scrolling */
-    }
-
-    /* LEFT SIDE (Brand / Info) */
-    .login-sidebar {
-        width: 45%;
-        background: #0f172a; /* Deep Navy */
-        color: white;
-        padding: 80px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+    /* LEFT VISUAL - NEW IMAGE */
+    .visual-side {
+        width: 50%;
+        /* Image: Professional, modern team collaboration */
+        background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');
+        background-size: cover;
+        background-position: center;
         position: relative;
-    }
-
-    .sidebar-content h1 {
-        font-size: 3rem;
-        line-height: 1.1;
-        margin-bottom: 20px;
-        font-weight: 800;
-    }
-
-    .sidebar-content p {
-        color: #94a3b8;
-        font-size: 1.2rem;
-        line-height: 1.6;
-        max-width: 450px;
-    }
-
-    .sidebar-footer {
-        margin-top: auto;
-        font-size: 0.85rem;
-        color: #475569;
-    }
-
-    /* RIGHT SIDE (Form) */
-    .login-main {
-        flex: 1;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 40px;
-        background: #ffffff;
-    }
-
-    .login-card {
-        width: 100%;
-        max-width: 400px;
-    }
-
-    .login-header {
-        text-align: center;
-        margin-bottom: 40px;
-    }
-    .login-header h2 { font-size: 2.2rem; margin-bottom: 10px; font-weight: 700; color: #111; }
-    .login-header p { color: #666; font-size: 1rem; }
-
-    /* Form Styles */
-    .form-group { margin-bottom: 20px; }
-    .form-label {
-        display: block;
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #334155;
-        margin-bottom: 8px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 16px;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        background: #f8fafc;
-        font-size: 1rem;
-        outline: none;
-        transition: 0.2s;
-    }
-    .form-control:focus { border-color: #4f46e5; background: white; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
-
-    .btn-submit {
-        width: 100%;
-        background: #4f46e5; /* Indigo */
+        justify-content: flex-end;
+        padding: 60px;
         color: white;
-        padding: 18px;
+    }
+    .visual-overlay {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        /* Deep Purple/Blue Gradient */
+        background: linear-gradient(to bottom, rgba(79, 70, 229, 0.5), rgba(17, 24, 39, 0.95)); 
+        z-index: 1;
+    }
+    .visual-content { position: relative; z-index: 2; }
+
+    /* RIGHT FORM */
+    .form-side {
+        flex: 1;
+        display: flex; align-items: center; justify-content: center;
+        padding: 40px;
+    }
+    .login-container { width: 100%; max-width: 400px; }
+
+    .form-control-custom {
+        width: 100%; padding: 14px; margin-bottom: 20px;
+        border: 1px solid #e2e8f0; border-radius: 8px;
+        background: #f9fafb; outline: none; font-size: 0.95rem;
+        font-family: 'Inter', sans-serif;
+    }
+    .form-control-custom:focus { border-color: #4f46e5; background: white; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
+
+    .btn-login {
+        width: 100%; padding: 15px;
+        background: #4f46e5; color: white;
+        border: none; border-radius: 12px;
+        font-weight: 700; cursor: pointer; transition: 0.2s;
         font-size: 1rem;
-        font-weight: 600;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        margin-top: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        transition: 0.2s;
     }
-    .btn-submit:hover { background: #4338ca; transform: translateY(-1px); }
+    .btn-login:hover { background: #4338ca; transform: translateY(-2px); }
 
-    .auth-footer {
-        text-align: center;
-        margin-top: 40px;
-        font-size: 0.9rem;
-        color: #64748b;
-        border-top: 1px solid #f1f5f9;
-        padding-top: 30px;
+    .register-link {
+        display: block; text-align: center; margin-top: 20px;
+        color: #6b7280; font-size: 0.9rem; text-decoration: none;
     }
-    .auth-link {
-        color: #4f46e5;
-        font-weight: 700;
-        text-decoration: none;
-        display: inline-flex; align-items: center; gap: 5px;
-        margin-top: 5px;
-        display: block;
-    }
-    .auth-link:hover { text-decoration: underline; }
+    .register-link span { color: #4f46e5; font-weight: 600; }
 
-    /* Mobile Responsive */
-    @media (max-width: 900px) {
-        .login-sidebar { display: none; }
-        .login-page-wrapper { justify-content: center; }
-        .login-main { padding: 20px; width: 100%; }
-    }
+    @media (max-width: 900px) { .visual-side { display: none; } }
 </style>
 
-<div class="login-page-wrapper">
-    
-    <div class="login-sidebar">
-        <div class="sidebar-content">
-            <div style="margin-bottom: 30px;">
-                <ion-icon name="cube" style="font-size: 3.5rem; color: #818cf8;"></ion-icon>
-            </div>
-            <h1>One Membership.<br>Unlimited Access.</h1>
-            <p>
-                TalentKonnect is exclusively available to Crowbar members. Access jobs, gigs, and rewards with your single pass.
-            </p>
-        </div>
-        <div class="sidebar-footer">
-            &copy; 2025 Crowbar Inc.
+<div class="login-wrapper">
+    <div class="visual-side">
+        <div class="visual-overlay"></div>
+        <div class="visual-content">
+            <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 15px; line-height: 1.1;">Find your<br>dream career.</h1>
+            <p style="opacity: 0.9; font-size: 1.1rem; font-weight: 300;">Connect with top companies and manage your professional growth in one place.</p>
         </div>
     </div>
 
-    <div class="login-main">
-        <div class="login-card">
-            
-            <div class="login-header">
-                <h2>Welcome Back</h2>
-                <p>Please sign in to your account.</p>
+    <div class="form-side">
+        <div class="login-container">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <div style="width: 50px; height: 50px; background: #e0e7ff; color: #4f46e5; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 1.5rem;">
+                    <ion-icon name="cube"></ion-icon>
+                </div>
+                <h2 style="font-weight: 800; color: #111; font-size: 1.8rem;">Welcome to TalentKonnect</h2>
+                <p style="color: #666;">Please enter your Crowbar details.</p>
             </div>
 
-            <div class="form-group">
-                <label class="form-label">Email Address</label>
-                <input type="email" id="email" class="form-control" placeholder="name@crowbar.com">
-            </div>
+            <label style="font-size: 0.75rem; font-weight: 700; color: #374151; margin-bottom: 5px; display: block; text-transform: uppercase; letter-spacing: 0.5px;">Email</label>
+            <input type="email" id="email" class="form-control-custom" placeholder="name@example.com">
 
-            <div class="form-group">
-                <label class="form-label">Password</label>
-                <input type="password" id="password" class="form-control" placeholder="••••••••">
-            </div>
+            <label style="font-size: 0.75rem; font-weight: 700; color: #374151; margin-bottom: 5px; display: block; text-transform: uppercase; letter-spacing: 0.5px;">Password</label>
+            <input type="password" id="password" class="form-control-custom" placeholder="••••••••">
 
-            <button id="loginBtn" class="btn-submit">
-                <ion-icon name="log-in-outline" style="font-size: 1.2rem;"></ion-icon>
-                Login with Crowbar ID
-            </button>
-            
-            <p id="msg" style="text-align: center; margin-top: 15px; color: #ef4444; font-weight: 600; font-size: 0.9rem; min-height: 20px;"></p>
+            <button id="loginBtn" class="btn-login">Sign In</button>
+            <p id="msg" style="text-align: center; margin-top: 15px; color: #ef4444; font-size: 0.85rem; font-weight: 600;"></p>
 
-            <div class="auth-footer">
-                Don't have an account?
-                <a href="https://crowbar-master-site.vercel.app/register" target="_blank" class="auth-link">
-                    Create Crowbar ID <ion-icon name="arrow-forward"></ion-icon>
-                </a>
-                <p style="margin-top: 10px; font-size: 0.75rem; opacity: 0.7;">
-                    Registering creates a unified ID for Crowbar, TalentKonnect, and EcoWorldBuy.
-                </p>
-            </div>
-
+            <a href="https://crowbar-master-site.vercel.app/register" class="register-link">
+                New here? <span>Create Crowbar ID &rarr;</span>
+            </a>
         </div>
     </div>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-    // CONFIG
     const SB_URL = 'https://zfxnhbymlhvukeqmsyhj.supabase.co';
-    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpmeG5oYnltbGh2dWtlcW1zeWhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4MTIyMTIsImV4cCI6MjA3NzM4ODIxMn0.kKB1RsLvXJuROPlBY5bWeBzTWDGGe_UTouWkfSc7RXs'; // <--- PASTE KEY AGAIN IF NEEDED
-    
+    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpmeG5oYnltbGh2dWtlcW1zeWhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4MTIyMTIsImV4cCI6MjA3NzM4ODIxMn0.kKB1RsLvXJuROPlBY5bWeBzTWDGGe_UTouWkfSc7RXs'; // <--- PASTE KEY IF MISSING
     const client = supabase.createClient(SB_URL, SB_KEY);
 
     document.getElementById('loginBtn').addEventListener('click', async () => {
@@ -213,29 +107,21 @@
         const msg = document.getElementById('msg');
         const btn = document.getElementById('loginBtn');
 
-        if(!email || !password) {
-            msg.innerText = "Please enter your credentials.";
-            return;
-        }
-
+        if(!email || !password) { msg.innerText = "Enter email & password"; return; }
+        
         btn.innerText = "Verifying...";
-        btn.style.opacity = "0.8";
-        msg.innerText = "";
-
+        
         const { data, error } = await client.auth.signInWithPassword({ email, password });
 
         if(error) {
-            msg.innerText = "Error: " + error.message;
-            btn.innerHTML = '<ion-icon name="log-in-outline" style="font-size: 1.2rem;"></ion-icon> Login with Crowbar ID';
-            btn.style.opacity = "1";
+            msg.innerText = error.message;
+            btn.innerText = "Sign In";
         } else {
-            msg.innerText = "Success! Redirecting...";
-            msg.style.color = "#10b981";
-            
+            msg.innerText = "Success!";
+            msg.style.color = "#4f46e5";
             localStorage.setItem('crowbar_session', data.session.access_token);
             localStorage.setItem('crowbar_user', JSON.stringify(data.user));
-            
-            setTimeout(() => window.location.href = '/dashboard', 1000);
+            setTimeout(() => window.location.href = '/dashboard', 800);
         }
     });
 </script>

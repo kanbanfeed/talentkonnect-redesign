@@ -32,8 +32,8 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => res.render('index', { title: 'Home', user: null }));
 
 // 2. Login Page (The Fix: Hide Layout)
+// We add 'hideLayout: true' to tell layout.ejs to remove the header
 app.get('/login', (req, res) => res.render('login', { title: 'Login', hideLayout: true }));
-
 // 3. Auth Redirect Route
 app.get('/auth/crowbar', async (req, res) => {
     const protocol = req.headers['x-forwarded-proto'] || 'http';
