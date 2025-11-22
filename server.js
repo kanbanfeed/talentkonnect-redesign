@@ -6,13 +6,12 @@ const path = require('path');
 const { createClient } = require('@supabase/supabase-js'); 
 const data = require('./data/staticData');
 
-// --- SUPABASE CONFIGURATION ---
+// --- SUPABASE CONFIG ---
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-// --- FIX FOR VERCEL (INTERNAL SERVER ERROR) ---
-// You MUST explicitly tell Express where the 'views' folder is
+// --- VIEW ENGINE ---
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -20,17 +19,23 @@ app.use(expressLayouts);
 app.set('layout', 'layout');
 app.use(express.static(path.join(__dirname, 'public')));
 
+// --- GLOBAL MIDDLEWARE (Default Settings) ---
+app.use((req, res, next) => {
+    // By default, show the Header/Footer on every page
+    res.locals.hideLayout = false; 
+    next();
+});
+
 // --- ROUTES ---
 
 // 1. Home Page
 app.get('/', (req, res) => res.render('index', { title: 'Home', user: null }));
 
-// 2. Login Page
-app.get('/login', (req, res) => res.render('login', { title: 'Login' }));
+// 2. Login Page (The Fix: Hide Layout)
+app.get('/login', (req, res) => res.render('login', { title: 'Login', hideLayout: true }));
 
-// 3. Auth Route (Note: If you use this, change localhost to your Vercel link)
+// 3. Auth Redirect Route
 app.get('/auth/crowbar', async (req, res) => {
-    // Determine the base URL (Production vs Local)
     const protocol = req.headers['x-forwarded-proto'] || 'http';
     const host = req.headers['x-forwarded-host'] || req.get('host');
     const baseUrl = `${protocol}://${host}`;
@@ -38,7 +43,6 @@ app.get('/auth/crowbar', async (req, res) => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'oidc', 
       options: {
-        // Dynamically set redirect URL so it works on Vercel AND Localhost
         redirectTo: `${baseUrl}/login`, 
         scopes: 'openid profile email', 
       },
@@ -51,21 +55,21 @@ app.get('/auth/crowbar', async (req, res) => {
 // 4. Dashboard
 app.get('/dashboard', (req, res) => res.render('dashboard', { title: 'Dashboard', ...data }));
 
-// 5. Post Job Page
+// 5. Post Job
 app.get('/post-job', (req, res) => res.render('post-job', { title: 'Post a Gig', user: data.user }));
 
-// 6. Apply Job Page
+// 6. Find Gigs
 app.get('/apply-job', (req, res) => res.render('apply-job', { title: 'Find Gigs', ...data }));
 
-// 7. Messaging Page
+// 7. Messages
 app.get('/messaging', (req, res) => res.render('messaging', { title: 'Messages', ...data }));
 
 
-// --- VERCEL DEPLOYMENT CONFIG ---
+// --- SERVER STARTUP ---
 const PORT = process.env.PORT || 3000;
 
 if (require.main === module) {
-    app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+    app.listen(PORT, () => console.log(`TalentKonnect running on http://localhost:${PORT}`));
 }
 
 module.exports = app;

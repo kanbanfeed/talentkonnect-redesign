@@ -1,134 +1,241 @@
-<div style="min-height: 80vh; display: flex; align-items: center; justify-content: center;">
-    <div class="login-grid" style="display: grid; grid-template-columns: 1fr 1fr; max-width: 900px; width: 100%; background: white; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #e2e8f0;">
-        
-        <div style="background: linear-gradient(135deg, #0f172a 0%, #334155 100%); padding: 40px; color: white; display: flex; flex-direction: column; justify-content: center;">
+<style>
+    /* Force hide the navigation bar on this page */
+    nav.navbar, .navbar-custom, header { 
+        display: none !important; 
+    }
+    
+    /* Remove the top padding usually reserved for the header */
+    body { 
+        padding-top: 0 !important; 
+        background-color: white; /* Ensure background is clean */
+    }
+
+    /* --- SPLIT LOGIN LAYOUT --- */
+    .login-page-wrapper {
+        display: flex;
+        min-height: 100vh;
+        background: white;
+        overflow: hidden; /* Prevent scrolling */
+    }
+
+    /* LEFT SIDE (Brand / Info) */
+    .login-sidebar {
+        width: 45%;
+        background: #0f172a; /* Deep Navy */
+        color: white;
+        padding: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+    }
+
+    .sidebar-content h1 {
+        font-size: 3rem;
+        line-height: 1.1;
+        margin-bottom: 20px;
+        font-weight: 800;
+    }
+
+    .sidebar-content p {
+        color: #94a3b8;
+        font-size: 1.2rem;
+        line-height: 1.6;
+        max-width: 450px;
+    }
+
+    .sidebar-footer {
+        margin-top: auto;
+        font-size: 0.85rem;
+        color: #475569;
+    }
+
+    /* RIGHT SIDE (Form) */
+    .login-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+        background: #ffffff;
+    }
+
+    .login-card {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .login-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .login-header h2 { font-size: 2.2rem; margin-bottom: 10px; font-weight: 700; color: #111; }
+    .login-header p { color: #666; font-size: 1rem; }
+
+    /* Form Styles */
+    .form-group { margin-bottom: 20px; }
+    .form-label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 16px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        background: #f8fafc;
+        font-size: 1rem;
+        outline: none;
+        transition: 0.2s;
+    }
+    .form-control:focus { border-color: #4f46e5; background: white; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
+
+    .btn-submit {
+        width: 100%;
+        background: #4f46e5; /* Indigo */
+        color: white;
+        padding: 18px;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: 0.2s;
+    }
+    .btn-submit:hover { background: #4338ca; transform: translateY(-1px); }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 0.9rem;
+        color: #64748b;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 30px;
+    }
+    .auth-link {
+        color: #4f46e5;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-flex; align-items: center; gap: 5px;
+        margin-top: 5px;
+        display: block;
+    }
+    .auth-link:hover { text-decoration: underline; }
+
+    /* Mobile Responsive */
+    @media (max-width: 900px) {
+        .login-sidebar { display: none; }
+        .login-page-wrapper { justify-content: center; }
+        .login-main { padding: 20px; width: 100%; }
+    }
+</style>
+
+<div class="login-page-wrapper">
+    
+    <div class="login-sidebar">
+        <div class="sidebar-content">
             <div style="margin-bottom: 30px;">
-                <ion-icon name="cube" style="font-size: 3rem; color: #818cf8;"></ion-icon>
+                <ion-icon name="cube" style="font-size: 3.5rem; color: #818cf8;"></ion-icon>
             </div>
-            <h2 style="font-size: 2.2rem; margin-bottom: 20px; font-weight: 800; line-height: 1.2;">One Membership.<br>Unlimited Access.</h2>
-            <p style="font-size: 1rem; color: #cbd5e1; line-height: 1.6; margin-bottom: 40px;">
+            <h1>One Membership.<br>Unlimited Access.</h1>
+            <p>
                 TalentKonnect is exclusively available to Crowbar members. Access jobs, gigs, and rewards with your single pass.
             </p>
-            <div style="display: flex; gap: 10px; font-size: 0.8rem; color: #94a3b8;">
-                <span>&copy; 2024 Crowbar Inc.</span>
-            </div>
         </div>
+        <div class="sidebar-footer">
+            &copy; 2025 Crowbar Inc.
+        </div>
+    </div>
 
-        <div style="padding: 50px; display: flex; flex-direction: column; justify-content: center;">
-            <div style="text-align: center; margin-bottom: 30px;">
-                <h3 style="font-size: 1.8rem; margin-bottom: 10px;">Welcome Back</h3>
-                <p style="color: var(--text-muted);">Please sign in to your account.</p>
+    <div class="login-main">
+        <div class="login-card">
+            
+            <div class="login-header">
+                <h2>Welcome Back</h2>
+                <p>Please sign in to your account.</p>
             </div>
 
-            <div>
-                <div class="form-group" style="margin-bottom: 15px;">
-                    <label style="display: block; font-weight: 700; margin-bottom: 8px; font-size: 0.9rem; color: #64748b;">Email Address</label>
-                    <input type="email" id="email" placeholder="name@crowbar.com" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0; background: #f8fafc;">
-                </div>
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label style="display: block; font-weight: 700; margin-bottom: 8px; font-size: 0.9rem; color: #64748b;">Password</label>
-                    <input type="password" id="password" placeholder="••••••••" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0; background: #f8fafc;">
-                </div>
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" id="email" class="form-control" placeholder="name@crowbar.com">
             </div>
 
-            <button id="ssoBtn" class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 1rem; border-radius: 12px; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: white; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px;">
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" id="password" class="form-control" placeholder="••••••••">
+            </div>
+
+            <button id="loginBtn" class="btn-submit">
                 <ion-icon name="log-in-outline" style="font-size: 1.2rem;"></ion-icon>
                 Login with Crowbar ID
             </button>
+            
+            <p id="msg" style="text-align: center; margin-top: 15px; color: #ef4444; font-weight: 600; font-size: 0.9rem; min-height: 20px;"></p>
 
-            <div style="margin-top: 10px; text-align: center; padding-top: 20px; border-top: 1px solid #e2e8f0;">
-                <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 8px;">
-                    Don't have an account?
-                </p>
-                
-                <a href="https://crowbar-master-site.vercel.app/register" target="_blank" 
-                   style="color: #4f46e5; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: all 0.2s;">
-                    Create Crowbar ID
-                    <ion-icon name="arrow-forward-circle-outline" style="font-size: 1.1rem;"></ion-icon>
+            <div class="auth-footer">
+                Don't have an account?
+                <a href="https://crowbar-master-site.vercel.app/register" target="_blank" class="auth-link">
+                    Create Crowbar ID <ion-icon name="arrow-forward"></ion-icon>
                 </a>
-                
-                <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 10px; line-height: 1.4;">
+                <p style="margin-top: 10px; font-size: 0.75rem; opacity: 0.7;">
                     Registering creates a unified ID for Crowbar, TalentKonnect, and EcoWorldBuy.
                 </p>
             </div>
 
-            <p id="statusMsg" style="text-align: center; margin-top: 20px; font-size: 0.85rem; color: #ef4444; font-weight: 600; min-height: 20px;"></p>
         </div>
     </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
-    console.log("Login Script Loaded");
+    // CONFIG
+    const SB_URL = 'https://zfxnhbymlhvukeqmsyhj.supabase.co';
+    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpmeG5oYnltbGh2dWtlcW1zeWhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4MTIyMTIsImV4cCI6MjA3NzM4ODIxMn0.kKB1RsLvXJuROPlBY5bWeBzTWDGGe_UTouWkfSc7RXs'; // <--- PASTE KEY AGAIN IF NEEDED
+    
+    const client = supabase.createClient(SB_URL, SB_KEY);
 
-    // 2. Configure Keys (PASTE YOUR ACTUAL KEYS HERE)
-    const SUPABASE_URL = 'https://zfxnhbymlhvukeqmsyhj.supabase.co'; 
-    // Note: I kept your key from the previous message. 
-    // Ideally, rely on Env variables if creating a build process, but for static script this works.
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpmeG5oYnltbGh2dWtlcW1zeWhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4MTIyMTIsImV4cCI6MjA3NzM4ODIxMn0.kKB1RsLvXJuROPlBY5bWeBzTWDGGe_UTouWkfSc7RXs'; 
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const msg = document.getElementById('msg');
+        const btn = document.getElementById('loginBtn');
 
-    // 3. Create Client (Notice we named it 'sbClient', NOT 'supabase')
-    const sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        if(!email || !password) {
+            msg.innerText = "Please enter your credentials.";
+            return;
+        }
 
-    // 4. Select Elements
-    const btn = document.getElementById('ssoBtn');
-    const msg = document.getElementById('statusMsg');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
+        btn.innerText = "Verifying...";
+        btn.style.opacity = "0.8";
+        msg.innerText = "";
 
-    // 5. Handle Click
-    if(btn) {
-        btn.addEventListener('click', async (e) => {
-            e.preventDefault(); // Stop page reload
-            console.log("Button Clicked");
+        const { data, error } = await client.auth.signInWithPassword({ email, password });
 
-            const email = emailInput.value;
-            const password = passwordInput.value;
-
-            if (!email || !password) {
-                msg.innerText = "Please enter both email and password.";
-                msg.style.color = "red";
-                return;
-            }
-
-            btn.innerText = "Logging in...";
-            msg.innerText = "Verifying credentials...";
-            msg.style.color = "blue";
-
-            // 6. Login using 'sbClient'
-            const { data, error } = await sbClient.auth.signInWithPassword({
-                email: email,
-                password: password,
-            });
-
-            if (error) {
-                console.error("Login Error:", error);
-                msg.innerText = "Error: " + error.message;
-                msg.style.color = "red";
-                btn.innerHTML = '<ion-icon name="log-in-outline" style="font-size: 1.2rem;"></ion-icon> Login with Crowbar ID';
-            } else {
-                console.log("Success:", data);
-                msg.innerText = "Success! Redirecting...";
-                msg.style.color = "green";
-                
-                // Save session
-                localStorage.setItem('crowbar_session', data.session.access_token);
-                localStorage.setItem('crowbar_user', JSON.stringify(data.user));
-
-                // Redirect
-                setTimeout(() => {
-                    window.location.href = '/dashboard';
-                }, 1000);
-            }
-        });
-    } else {
-        console.error("Button element 'ssoBtn' not found!");
-    }
+        if(error) {
+            msg.innerText = "Error: " + error.message;
+            btn.innerHTML = '<ion-icon name="log-in-outline" style="font-size: 1.2rem;"></ion-icon> Login with Crowbar ID';
+            btn.style.opacity = "1";
+        } else {
+            msg.innerText = "Success! Redirecting...";
+            msg.style.color = "#10b981";
+            
+            localStorage.setItem('crowbar_session', data.session.access_token);
+            localStorage.setItem('crowbar_user', JSON.stringify(data.user));
+            
+            setTimeout(() => window.location.href = '/dashboard', 1000);
+        }
+    });
 </script>
-<style>
-    @media (max-width: 768px) {
-        .login-grid { grid-template-columns: 1fr !important; }
-        .login-grid > div:first-child { display: none !important; }
-    }
-</style>
