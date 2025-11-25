@@ -31,9 +31,29 @@ app.use((req, res, next) => {
 // 1. Home Page
 app.get('/', (req, res) => res.render('index', { title: 'Home', user: null }));
 
-// 2. Login Page (The Fix: Hide Layout)
-// We add 'hideLayout: true' to tell layout.ejs to remove the header
-app.get('/login', (req, res) => res.render('login', { title: 'Login', hideLayout: true }));
+// --- SSO LOGIN ROUTE ---
+app.get('/login', (req, res) => {
+    // 1. Determine current domain (Localhost or Live)
+    const protocol = req.headers['x-forwarded-proto'] || 'http';
+    const host = req.headers['x-forwarded-host'] || req.get('host');
+    const baseUrl = `${protocol}://${host}`;
+    
+    // 2. Build the Callback URL (Where Crowbar should send them back)
+    const returnUrl = `${baseUrl}/auth/callback`;
+    
+    // 3. Encode it safely
+    const encodedUrl = encodeURIComponent(returnUrl);
+    
+    
+    res.redirect(`https://www.crowbarltd.com/login?redirect_to=${encodedUrl}`);
+});
+
+
+app.get('/auth/callback', (req, res) => {
+    res.render('callback', { title: 'Syncing Identity...' });
+});
+
+
 // 3. Auth Redirect Route
 app.get('/auth/crowbar', async (req, res) => {
     const protocol = req.headers['x-forwarded-proto'] || 'http';

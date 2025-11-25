@@ -31,6 +31,7 @@
     </style>
 </head>
 <body>
+    
     <nav class="navbar">
         <div class="nav-container">
             <a href="/" class="logo-section">
@@ -41,16 +42,13 @@
             <div class="nav-links">
                 <a href="/" class="nav-item">Home</a>
                 <a href="/dashboard" class="nav-item">Dashboard</a>
-                <a href="/apply-job" class="nav-item">Find Gigs</a>
-                <a href="/post-job" class="nav-item">Post Gig</a>
+                <a href="/apply-job" class="nav-item">Apply Job</a>
+                <a href="/post-job" class="nav-item">Post Job</a>
                 <a href="/messaging" class="nav-item">Messages</a>
             </div>
 
             <div class="nav-right">
-                <div class="icon-btn-header">
-                    <ion-icon name="notifications-outline" style="font-size: 1.3rem;"></ion-icon>
-                    <div class="notification-dot" style="border-color: #1e1b4b;"></div>
-                </div>
+               
 
                 <div class="profile-pill" id="header-profile-pill" style="display: flex;">
                     <div class="user-info">
@@ -65,7 +63,7 @@
             </div>
         </div>
     </nav>
-    
+  
     <main class="container">
         <%- body %>
     </main>

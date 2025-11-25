@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authenticating...</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            height: 100vh; background: #ffffff; font-family: sans-serif;
+        }
+        .loader { 
+            border: 4px solid #f3f3f3; border-top: 4px solid #4f46e5; 
+            border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; 
+            margin-bottom: 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="loader"></div>
+    <p style="color: #666;">Verifying Crowbar ID...</p>
+
+    <script>
+        // 1. CONFIG (Use your TalentKonnect Keys)
+        const SB_URL = 'https://zfxnhbymlhvukeqmsyhj.supabase.co';
+        const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpmeG5oYnltbGh2dWtlcW1zeWhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4MTIyMTIsImV4cCI6MjA3NzM4ODIxMn0.kKB1RsLvXJuROPlBY5bWeBzTWDGGe_UTouWkfSc7RXs';
+        const client = supabase.createClient(SB_URL, SB_KEY);
+
+        async function handleSSO() {
+            // 2. Supabase automatically detects the #access_token in the URL
+            const { data: { session }, error } = await client.auth.getSession();
+
+            if (session) {
+                // 3. Save Session locally
+                localStorage.setItem('crowbar_session', session.access_token);
+                localStorage.setItem('crowbar_user', JSON.stringify(session.user));
+                
+                // 4. Success! Go to Dashboard
+                window.location.href = '/dashboard';
+            } else {
+                // 5. If something failed, go back to home
+                console.error("SSO Failed");
+                setTimeout(() => { window.location.href = '/'; }, 2000);
+            }
+        }
+
+        // Listen for the auth event just in case
+        client.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN' && session) {
+                localStorage.setItem('crowbar_session', session.access_token);
+                localStorage.setItem('crowbar_user', JSON.stringify(session.user));
+                window.location.href = '/dashboard';
+            }
+        });
+
+        handleSSO();
+    </script>
+</body>
+</html>
