@@ -16,29 +16,29 @@
             transition: opacity 0.2s;
             cursor: pointer;
         }
-        .btn-cta{
-            background: #4f46e5;
-            color: white;
+        .btn-cta {
+            background: var(--secondary-gradient); /* Updated to use new Gold theme */
+            color: #000; /* Dark text for contrast on gold */
             padding: 8px 20px;
             border-radius: 20px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.9rem;
             display: none; /* Hidden by default */
         }
         /* Login Button Style (In case user is logged out) */
          .nav-login-btn {
-            background: #4f46e5;
-            color: white;
+            background: var(--secondary-gradient);
+            color: #000;
             padding: 8px 20px;
             border-radius: 20px;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.9rem;
             display: none; /* Hidden by default */
         }
         .btn-logout {
-             background: #4f46e5;
+            background: #334155;
             color: white;
             padding: 8px 20px;
             border-radius: 20px;
@@ -51,51 +51,52 @@
 </head>
 <body>
     
+    <div class="crowbar-banner">
+        Crowbar Members Get Priority Visibility + Lifetime Access
+    </div>
+
     <nav class="navbar">
         <div class="nav-container">
             <a href="/" class="logo-section">
-                <ion-icon name="cube" style="color: #818cf8; font-size: 1.5rem;"></ion-icon>
+                <ion-icon name="cube" style="color: #f59e0b; font-size: 1.5rem;"></ion-icon>
                 TalentKonnect
             </a>
 
-          <div class="nav-links" role="navigation" aria-label="Main navigation">
-    <a href="/" class="nav-item">Home</a>
-    <a href="/dashboard" class="nav-item">Dashboard</a>
-    <a href="/apply-job" class="nav-item">Apply Job</a>
-    <a href="/post-job" class="nav-item">Post Job</a>
-    <a href="/messaging" class="nav-item">Messages</a>
-</div>
+            <div class="nav-links" role="navigation" aria-label="Main navigation">
+                <a href="/" class="nav-item">Home</a>
+                <a href="/dashboard" class="nav-item">Dashboard</a>
+                <a href="/apply-job" class="nav-item">Apply Job</a>
+                <a href="/post-job" class="nav-item">Post Job</a>
+                <a href="/messaging" class="nav-item">Messages</a>
+            </div>
 
-<div class="nav-right">
-    <!-- hamburger (hidden on desktop, shown on mobile by CSS) -->
-    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+            <div class="nav-right">
+                <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
 
-    <div class="profile-pill" id="header-profile-pill" style="display: flex; visibility: visible; opacity: 1;">
-  <div class="user-info">
-    <span class="user-name" id="nav-user-name">Loading...</span>
-    <span class="user-role" id="nav-user-role">...</span>
-  </div>
-  <!-- start hidden, will be filled by JS -->
-  <div class="user-avatar" id="nav-user-avatar" aria-hidden="true" style="visibility:hidden"></div>
-</div>
+                <div class="profile-pill" id="header-profile-pill" style="display: flex; visibility: visible; opacity: 1;">
+                    <div class="user-info">
+                        <span class="user-name" id="nav-user-name">Loading...</span>
+                        <span class="user-role" id="nav-user-role">...</span>
+                    </div>
+                    <div class="user-avatar" id="nav-user-avatar" aria-hidden="true" style="visibility:hidden"></div>
+                </div>
 
+                <a href="/login" id="nav-login-btn" class="btn-cta">
+                    <ion-icon name="log-in-outline"></ion-icon> Login with Crowbar
+                </a>
 
-<a href="/login" id="nav-login-btn" class="btn-cta">
-                        <ion-icon name="log-in-outline"></ion-icon> Login
-                    </a>
+                <a href="#" id="nav-logout-btn" onclick="logout()" class="btn-logout">
+                    <ion-icon name="log-out-outline"></ion-icon> Logout
+                </a>
+            </div>
 
-                    <a href="#" id="nav-logout-btn" onclick="logout()" class="btn-logout">
-                        <ion-icon name="log-out-outline"></ion-icon> Logout
-                    </a></div>
-
-<!-- MOBILE NAV (toggle target) -->
-<div class="mobile-nav" aria-hidden="true">
-    <a href="/" class="nav-item">Home</a>
-    <a href="/dashboard" class="nav-item">Dashboard</a>
-    <a href="/apply-job" class="nav-item">Apply Job</a>
-    <a href="/post-job" class="nav-item">Post Job</a>
-    <a href="/messaging" class="nav-item">Messages</a>
-</div>
+            <div class="mobile-nav" aria-hidden="true">
+                <a href="/" class="nav-item">Home</a>
+                <a href="/dashboard" class="nav-item">Dashboard</a>
+                <a href="/apply-job" class="nav-item">Apply Job</a>
+                <a href="/post-job" class="nav-item">Post Job</a>
+                <a href="/messaging" class="nav-item">Messages</a>
+            </div>
 
         </div>
     </nav>
@@ -103,6 +104,10 @@
     <main class="container">
         <%- body %>
     </main>
+
+    <footer class="crowbar-footer">
+        <p>Part of the Crowbar Connected Network</p>
+    </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
@@ -124,14 +129,13 @@
             
             const profilePill = document.getElementById('header-profile-pill');
             const loginBtn = document.getElementById('nav-login-btn');
-            const logoutBtn = document.getElementById('nav-logout-btn'); // Get the logout button
+            const logoutBtn = document.getElementById('nav-logout-btn');
 
             if (sessionStr && userStr) {
                 // --- USER IS LOGGED IN ---
-                if(loginBtn) loginBtn.style.display = 'none';          // Hide Login
-                if(profilePill) profilePill.style.display = 'flex';    // Show Profile
+                if(loginBtn) loginBtn.style.display = 'none';          
+                if(profilePill) profilePill.style.display = 'flex';    
                 
-                // FIX: Show Logout Button
                 if(logoutBtn) {
                     logoutBtn.classList.remove('d-none-custom');
                     logoutBtn.style.display = 'inline-flex'; 
@@ -139,7 +143,7 @@
 
                 const user = JSON.parse(userStr);
                 const SB_URL = 'https://zfxnhbymlhvukeqmsyhj.supabase.co';
-                const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpmeG5oYnltbGh2dWtlcW1zeWhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4MTIyMTIsImV4cCI6MjA3NzM4ODIxMn0.kKB1RsLvXJuROPlBY5bWeBzTWDGGe_UTouWkfSc7RXs'; // <--- PASTE KEY HERE
+                const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpmeG5oYnltbGh2dWtlcW1zeWhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4MTIyMTIsImV4cCI6MjA3NzM4ODIxMn0.kKB1RsLvXJuROPlBY5bWeBzTWDGGe_UTouWkfSc7RXs'; 
                 const client = supabase.createClient(SB_URL, SB_KEY);
 
                 const { data: profile } = await client
@@ -158,48 +162,46 @@
                 }
             } else {
                 // --- USER IS LOGGED OUT ---
-                if(profilePill) profilePill.style.display = 'none'; // Hide Profile
-                if(logoutBtn) logoutBtn.style.display = 'none';     // Hide Logout
-                if(loginBtn) loginBtn.style.display = 'inline-flex'; // Show Login
+                if(profilePill) profilePill.style.display = 'none'; 
+                if(logoutBtn) logoutBtn.style.display = 'none';     
+                if(loginBtn) loginBtn.style.display = 'inline-flex'; 
             }
         });
     </script>
     <script>
-  // Mobile nav toggle
-  (function(){
-    document.addEventListener('DOMContentLoaded', function() {
-      const navToggle = document.querySelector('.nav-toggle');
-      const mobileNav = document.querySelector('.mobile-nav');
+      // Mobile nav toggle (Same as before)
+      (function(){
+        document.addEventListener('DOMContentLoaded', function() {
+          const navToggle = document.querySelector('.nav-toggle');
+          const mobileNav = document.querySelector('.mobile-nav');
 
-      if (!navToggle || !mobileNav) return;
+          if (!navToggle || !mobileNav) return;
 
-      navToggle.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const shown = mobileNav.classList.toggle('_show');
-        navToggle.setAttribute('aria-expanded', shown ? 'true' : 'false');
-        mobileNav.setAttribute('aria-hidden', shown ? 'false' : 'true');
-      });
+          navToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const shown = mobileNav.classList.toggle('_show');
+            navToggle.setAttribute('aria-expanded', shown ? 'true' : 'false');
+            mobileNav.setAttribute('aria-hidden', shown ? 'false' : 'true');
+          });
 
-      // close on outside click
-      document.addEventListener('click', (e) => {
-        if (!mobileNav.contains(e.target) && !navToggle.contains(e.target)) {
-          mobileNav.classList.remove('_show');
-          navToggle.setAttribute('aria-expanded', 'false');
-          mobileNav.setAttribute('aria-hidden', 'true');
-        }
-      });
+          document.addEventListener('click', (e) => {
+            if (!mobileNav.contains(e.target) && !navToggle.contains(e.target)) {
+              mobileNav.classList.remove('_show');
+              navToggle.setAttribute('aria-expanded', 'false');
+              mobileNav.setAttribute('aria-hidden', 'true');
+            }
+          });
 
-      // prevent closing when clicking inside
-      mobileNav.addEventListener('click', function(e){ e.stopPropagation(); });
-    });
-  })();
+          mobileNav.addEventListener('click', function(e){ e.stopPropagation(); });
+        });
+      })();
 
-  function logout() {
+      function logout() {
             localStorage.removeItem('crowbar_session');
             localStorage.removeItem('crowbar_user');
             window.location.href = '/';
         }
-</script>
+    </script>
 
 </body>
 </html>
