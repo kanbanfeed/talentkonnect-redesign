@@ -16,13 +16,33 @@
 
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: var(--background);
+    background-color: #ffffff; /* Clean White Base */
     color: var(--text-main);
     line-height: 1.6;
-    /* Soft ambient background */
-    background-image: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 20%), 
-                      radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 20%);
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+
+    /* --- DISTINCT BUBBLE BACKGROUND --- */
+    background-image: 
+        /* 1. Large Purple Bubble (Top Left) - 300px wide */
+        radial-gradient(circle at 10% 15%, rgba(167, 139, 250, 0.25) 0%, transparent 300px),
+        
+        /* 2. Blue Bubble (Top Right) - 250px wide */
+        radial-gradient(circle at 90% 10%, rgba(56, 189, 248, 0.25) 0%, transparent 250px),
+        
+        /* 3. Pink/Magenta Bubble (Middle/Left) - 350px wide */
+        radial-gradient(circle at 5% 50%, rgba(244, 114, 182, 0.2) 0%, transparent 350px),
+        
+        /* 4. Small Blue Bubble (Middle Center) - 150px wide */
+        radial-gradient(circle at 40% 40%, rgba(199, 210, 254, 0.3) 0%, transparent 150px),
+        
+        /* 5. Violet Bubble (Bottom Right) - 300px wide */
+        radial-gradient(circle at 90% 85%, rgba(167, 139, 250, 0.2) 0%, transparent 300px);
+        
+    background-attachment: fixed;
+    background-repeat: no-repeat;
 }
 
 a { text-decoration: none; color: inherit; transition: 0.2s ease; }
@@ -353,24 +373,36 @@ a { text-decoration: none; color: inherit; transition: 0.2s ease; }
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
-
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: #ffffff;
+    background-color: #ffffff; /* Clean White Base */
     color: var(--text-main);
     line-height: 1.6;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 
-    /* --- SOFT ORB BACKGROUND (Matches Screenshot 3) --- */
+    /* --- DISTINCT BUBBLE BACKGROUND --- */
     background-image: 
-        radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 40%), 
-        radial-gradient(circle at 90% 10%, rgba(236, 72, 153, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.05) 0%, transparent 60%);
+        /* 1. Large Purple Bubble (Top Left) - 300px wide */
+        radial-gradient(circle at 10% 15%, rgba(167, 139, 250, 0.25) 0%, transparent 300px),
+        
+        /* 2. Blue Bubble (Top Right) - 250px wide */
+        radial-gradient(circle at 90% 10%, rgba(56, 189, 248, 0.25) 0%, transparent 250px),
+        
+        /* 3. Pink/Magenta Bubble (Middle/Left) - 350px wide */
+        radial-gradient(circle at 5% 50%, rgba(244, 114, 182, 0.2) 0%, transparent 350px),
+        
+        /* 4. Small Blue Bubble (Middle Center) - 150px wide */
+        radial-gradient(circle at 40% 40%, rgba(199, 210, 254, 0.3) 0%, transparent 150px),
+        
+        /* 5. Violet Bubble (Bottom Right) - 300px wide */
+        radial-gradient(circle at 90% 85%, rgba(167, 139, 250, 0.2) 0%, transparent 300px);
+        
     background-attachment: fixed;
+    background-repeat: no-repeat;
 }
-
 a { text-decoration: none; color: inherit; transition: 0.2s ease; }
 
 /* --- 1. BANNER (Matches Screenshot 1/2 vibes) --- */
