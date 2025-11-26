@@ -39,28 +39,40 @@
                 TalentKonnect
             </a>
 
-            <div class="nav-links">
-                <a href="/" class="nav-item">Home</a>
-                <a href="/dashboard" class="nav-item">Dashboard</a>
-                <a href="/apply-job" class="nav-item">Apply Job</a>
-                <a href="/post-job" class="nav-item">Post Job</a>
-                <a href="/messaging" class="nav-item">Messages</a>
-            </div>
+          <div class="nav-links" role="navigation" aria-label="Main navigation">
+    <a href="/" class="nav-item">Home</a>
+    <a href="/dashboard" class="nav-item">Dashboard</a>
+    <a href="/apply-job" class="nav-item">Apply Job</a>
+    <a href="/post-job" class="nav-item">Post Job</a>
+    <a href="/messaging" class="nav-item">Messages</a>
+</div>
 
-            <div class="nav-right">
-               
+<div class="nav-right">
+    <!-- hamburger (hidden on desktop, shown on mobile by CSS) -->
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
 
-                <div class="profile-pill" id="header-profile-pill" style="display: flex;">
-                    <div class="user-info">
-                        <span class="user-name" id="nav-user-name">Loading...</span>
-                        <span class="user-role" id="nav-user-role">...</span>
-                    </div>
-                    <div class="user-avatar" id="nav-user-avatar">--</div>
-                </div>
+    <div class="profile-pill" id="header-profile-pill" style="display: flex; visibility: visible; opacity: 1;">
+  <div class="user-info">
+    <span class="user-name" id="nav-user-name">Loading...</span>
+    <span class="user-role" id="nav-user-role">...</span>
+  </div>
+  <!-- start hidden, will be filled by JS -->
+  <div class="user-avatar" id="nav-user-avatar" aria-hidden="true" style="visibility:hidden"></div>
+</div>
 
-                <a href="/login" id="header-login-btn" class="nav-login-btn">Login</a>
 
-            </div>
+    <a href="/login" id="header-login-btn" class="nav-login-btn">Login</a>
+</div>
+
+<!-- MOBILE NAV (toggle target) -->
+<div class="mobile-nav" aria-hidden="true">
+    <a href="/" class="nav-item">Home</a>
+    <a href="/dashboard" class="nav-item">Dashboard</a>
+    <a href="/apply-job" class="nav-item">Apply Job</a>
+    <a href="/post-job" class="nav-item">Post Job</a>
+    <a href="/messaging" class="nav-item">Messages</a>
+</div>
+
         </div>
     </nav>
   
@@ -120,5 +132,36 @@
             }
         });
     </script>
+    <script>
+  // Mobile nav toggle
+  (function(){
+    document.addEventListener('DOMContentLoaded', function() {
+      const navToggle = document.querySelector('.nav-toggle');
+      const mobileNav = document.querySelector('.mobile-nav');
+
+      if (!navToggle || !mobileNav) return;
+
+      navToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const shown = mobileNav.classList.toggle('_show');
+        navToggle.setAttribute('aria-expanded', shown ? 'true' : 'false');
+        mobileNav.setAttribute('aria-hidden', shown ? 'false' : 'true');
+      });
+
+      // close on outside click
+      document.addEventListener('click', (e) => {
+        if (!mobileNav.contains(e.target) && !navToggle.contains(e.target)) {
+          mobileNav.classList.remove('_show');
+          navToggle.setAttribute('aria-expanded', 'false');
+          mobileNav.setAttribute('aria-hidden', 'true');
+        }
+      });
+
+      // prevent closing when clicking inside
+      mobileNav.addEventListener('click', function(e){ e.stopPropagation(); });
+    });
+  })();
+</script>
+
 </body>
 </html>

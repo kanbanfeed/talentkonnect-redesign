@@ -233,3 +233,99 @@ a { text-decoration: none; color: inherit; transition: 0.2s ease; }
     .sidebar-card { display: none; } /* Hide sidebar on mobile for now */
     .stats-grid { grid-template-columns: 1fr; }
 }
+
+/* FOR RESPONSIVE */
+
+    
+/* ---------- RESPONSIVE OVERRIDES (append to styles.css) ---------- */
+
+/* Ensure mobile viewport meta exists in layout.ejs:
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"> */
+
+.nav-toggle {
+  display: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  color: #e6eefc;
+  font-size: 20px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile nav panel (hidden by default) */
+.mobile-nav {
+  display: none;
+  position: absolute;
+  top: 70px; /* matches .navbar height */
+  left: 0;
+  width: 100%;
+  padding: 12px 18px;
+  z-index: 2200; /* ensure above header */
+  background: linear-gradient(180deg, rgba(30,27,75,0.98), rgba(31,29,77,0.98));
+  box-shadow: 0 8px 30px rgba(15,23,42,0.35);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+/* visible helper class toggled by JS */
+.mobile-nav._show { display: block; }
+
+/* Mobile nav link styles */
+.mobile-nav .nav-item {
+  display: block;
+  padding: 12px 8px;
+  color: #e6eefc;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+/* Hide desktop nav & show hamburger under this breakpoint */
+@media (max-width: 768px) {
+  .nav-links { display: none !important; } /* hide desktop links */
+  .nav-toggle { display: inline-flex; }
+  .profile-pill { padding: 6px 10px; }
+  .nav-right { gap: 10px; }
+  .navbar { height: 64px; }
+  .mobile-nav { top: 64px; }
+}
+
+/* Small screens: collapse hero & float cards */
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr !important; gap: 20px !important; min-height: auto; padding: 24px 0; }
+  .hero-visual { height: auto; min-height: 220px; padding: 8px; }
+  .float-card-1, .float-card-2 {
+    position: relative !important;
+    transform: none !important;
+    top: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    margin: 0 0 14px 0 !important;
+  }
+}
+
+/* Chat & Dashboard responsive tweaks (ensure no overflow) */
+@media (max-width: 768px) {
+  .chat-container { display: flex; flex-direction: column; height: auto; max-height: calc(100vh - 120px); }
+  .chat-sidebar { order: 2; width: 100%; border-right: none; border-top: 1px solid var(--border); }
+  .chat-main { order: 1; width: 100%; }
+  .dashboard-layout { grid-template-columns: 1fr !important; gap: 20px; }
+  .sidebar-card { position: relative; top: 0; display: block; }
+}
+
+/* smaller phones */
+@media (max-width: 420px) {
+  .logo-section { font-size: 1.0rem; gap: 8px; }
+  .user-avatar { width: 28px; height: 28px; font-size: 0.8rem; }
+  .btn { padding: 10px 16px; font-size: 0.95rem; }
+}
+
+/* Accessibility: slightly bigger hit areas */
+.icon-btn-header { padding: 6px; }
+
+/* small animation */
+@keyframes tk-fade-in { from { opacity: 0; transform: translateY(-6px);} to { opacity:1; transform: none; } }
+.mobile-nav._show { animation: tk-fade-in .12s ease-out; }

@@ -42,6 +42,11 @@ app.get('/login', (req, res) => {
     res.redirect(`https://www.crowbarltd.com/login?redirect_to=${encodedUrl}`);
 });
 
+app.get('/auth/callback', (req, res) => {
+    
+    res.render('callback', { title: 'Syncing Identity...', hideLayout: true });
+});
+
 // 3. Auth Route (Note: If you use this, change localhost to your Vercel link)
 app.get('/auth/crowbar', async (req, res) => {
     // Determine the base URL (Production vs Local)
@@ -62,10 +67,7 @@ app.get('/auth/crowbar', async (req, res) => {
     res.redirect(data.url); 
 });
 
-app.get('/auth/callback', (req, res) => {
-    // This renders the file we just updated above
-    res.render('callback', { title: 'Syncing Identity...', hideLayout: true });
-});
+
 
 // 4. Dashboard
 app.get('/dashboard', (req, res) => res.render('dashboard', { title: 'Dashboard', ...data }));
