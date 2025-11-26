@@ -8,35 +8,33 @@
 
     /* 1. HERO WELCOME SECTION */
     .hero-welcome {
-        background: white;
-        border: 1px solid #e5e7eb;
-        border-radius: 16px;
-        padding: 35px 40px;
+        background: white; 
+        border: 1px solid white;
+        border-radius: 24px; /* Matches screenshots */
+        padding: 40px;
         margin-bottom: 40px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        background-image: radial-gradient(circle at top right, #fdfbf7 0%, #ffffff 40%);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
     }
 
-    .hero-title { font-size: 2rem; font-weight: 800; color: #111; letter-spacing: -1px; margin-bottom: 5px; }
-    .hero-sub { color: #6b7280; font-size: 1.1rem; margin: 0; }
+    .hero-title { font-size: 2rem; font-weight: 800; color: #1e1b4b; letter-spacing: -1px; margin-bottom: 5px; }
+    .hero-sub { color: #64748b; font-size: 1.1rem; margin: 0; }
 
     /* Logout / Profile Section */
     .hero-actions {
         display: flex;
         align-items: center;
         gap: 15px;
-        background: #f9fafb;
+        background: #f8fafc;
         padding: 8px 8px 8px 20px;
         border-radius: 50px;
-        border: 1px solid #e5e7eb;
     }
 
     .profile-info { text-align: right; line-height: 1.2; margin-right: 5px; }
-    .profile-email { font-size: 0.85rem; font-weight: 700; color: #111; }
-    .profile-label { font-size: 0.7rem; color: #6b7280; text-transform: uppercase; }
+    .profile-email { font-size: 0.85rem; font-weight: 700; color: #1e1b4b; }
+    .profile-label { font-size: 0.7rem; color: #64748b; text-transform: uppercase; }
 
     .btn-logout {
         background: #fee2e2;
@@ -47,7 +45,6 @@
         text-decoration: none;
         font-size: 0.85rem;
         border: none;
-        transition: 0.2s;
         cursor: pointer;
         display: flex; align-items: center; gap: 6px;
     }
@@ -63,63 +60,63 @@
 
     .stat-card {
         background: white;
-        padding: 25px;
-        border-radius: 16px;
-        border: 1px solid #e5e7eb;
+        padding: 30px;
+        border-radius: 24px;
+        border: 1px solid white;
         transition: 0.3s;
-        position: relative;
-        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     }
-    .stat-card:hover { border-color: #4f46e5; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
 
-    .card-green { border-top: 4px solid #10b981; }
-    .card-gold { border-top: 4px solid #f59e0b; }
-    .card-blue { border-top: 4px solid #4f46e5; }
+    .card-green { border-bottom: 4px solid #10b981; }
+    .card-gold { border-bottom: 4px solid #f59e0b; }
+    .card-blue { border-bottom: 4px solid #6366f1; }
 
     .stat-icon-box {
-        width: 45px; height: 45px;
-        border-radius: 10px;
+        width: 50px; height: 50px;
+        border-radius: 14px;
         display: flex; align-items: center; justify-content: center;
-        margin-bottom: 15px;
-        font-size: 1.2rem;
+        margin-bottom: 20px;
+        font-size: 1.4rem;
     }
 
     .icon-green { background: #ecfdf5; color: #10b981; }
     .icon-gold { background: #fffbeb; color: #f59e0b; }
-    .icon-blue { background: #eef2ff; color: #4f46e5; }
+    .icon-blue { background: #e0e7ff; color: #6366f1; }
 
-    .stat-label { font-size: 0.8rem; font-weight: 600; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; }
-    .stat-value { font-size: 2.2rem; font-weight: 800; color: #111; margin: 5px 0; letter-spacing: -1px; }
-    .stat-hint { font-size: 0.85rem; color: #9ca3af; display: flex; align-items: center; gap: 5px; }
+    .stat-label { font-size: 0.8rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-value { font-size: 2.4rem; font-weight: 800; color: #1e1b4b; margin: 5px 0; letter-spacing: -1px; }
+    .stat-hint { font-size: 0.85rem; color: #64748b; display: flex; align-items: center; gap: 5px; }
 
     /* 3. ACTIVITY TABLE */
-    .activity-section h4 { font-weight: 700; margin-bottom: 20px; color: #111; }
+    .activity-section h4 { font-weight: 800; margin-bottom: 25px; color: #1e1b4b; font-size: 1.2rem; }
     
     .activity-table {
         background: white;
-        border: 1px solid #e5e7eb;
-        border-radius: 16px;
+        border: 1px solid white;
+        border-radius: 24px;
         overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     }
 
     .activity-row {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        padding: 20px 30px;
-        border-bottom: 1px solid #f3f4f6;
+        padding: 25px 35px;
+        border-bottom: 1px solid #f1f5f9;
         align-items: center;
     }
     .activity-row:last-child { border-bottom: none; }
-    .activity-header { background: #f9fafb; font-weight: 600; font-size: 0.85rem; color: #6b7280; text-transform: uppercase; }
+    .activity-header { background: #f8fafc; font-weight: 700; font-size: 0.8rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
     
-    .job-title { font-weight: 600; color: #111; }
-    .job-company { font-size: 0.85rem; color: #6b7280; }
+    .job-title { font-weight: 700; color: #1e1b4b; font-size: 1rem; }
+    .job-company { font-size: 0.85rem; color: #64748b; }
     
     .status-badge {
-        padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
+        padding: 6px 14px; border-radius: 30px; font-size: 0.75rem; font-weight: 700;
         display: inline-block;
     }
-    .status-pending { background: #fff7ed; color: #c2410c; }
+    .status-pending { background: #fff7ed; color: #ea580c; }
 
     /* Loading */
     #loading-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: white; z-index: 2000; display: flex; align-items: center; justify-content: center; }
@@ -152,7 +149,7 @@
                     <div class="profile-label">Crowbar ID</div>
                 </div>
                 <button onclick="logout()" class="btn-logout">
-                    <i class="bi bi-box-arrow-right"></i> Sign Out
+                    <ion-icon name="log-out-outline"></ion-icon> Sign Out
                 </button>
             </div>
         </div>
@@ -160,18 +157,16 @@
         <div class="stats-grid">
             <div class="stat-card card-green">
                 <div class="d-flex justify-content-between">
-                    <div class="stat-icon-box icon-green"><i class="bi bi-wallet2"></i></div>
-                    <i class="bi bi-three-dots text-muted" style="cursor: pointer;"></i>
+                    <div class="stat-icon-box icon-green"><ion-icon name="wallet"></ion-icon></div>
                 </div>
                 <div class="stat-label">Total Earnings</div>
                 <div class="stat-value" id="wallet-bal">...</div>
-                <div class="stat-hint"><i class="bi bi-arrow-up-right-circle-fill text-success"></i> Available for withdrawal</div>
+                <div class="stat-hint" style="color: #10b981;"><ion-icon name="arrow-up-circle"></ion-icon> Available</div>
             </div>
 
             <div class="stat-card card-gold">
                 <div class="d-flex justify-content-between">
-                    <div class="stat-icon-box icon-gold"><i class="bi bi-lightning-charge-fill"></i></div>
-                    <i class="bi bi-three-dots text-muted" style="cursor: pointer;"></i>
+                    <div class="stat-icon-box icon-gold"><ion-icon name="flash"></ion-icon></div>
                 </div>
                 <div class="stat-label">Connect Credits</div>
                 <div class="stat-value" id="credits-bal">...</div>
@@ -180,12 +175,11 @@
 
             <div class="stat-card card-blue">
                 <div class="d-flex justify-content-between">
-                    <div class="stat-icon-box icon-blue"><i class="bi bi-patch-check-fill"></i></div>
-                    <i class="bi bi-three-dots text-muted" style="cursor: pointer;"></i>
+                    <div class="stat-icon-box icon-blue"><ion-icon name="ribbon"></ion-icon></div>
                 </div>
-                <div class="stat-label">Membership Status</div>
+                <div class="stat-label">Membership</div>
                 <div class="stat-value" style="font-size: 1.8rem; margin-top: 10px;">Pro Plan</div>
-                <div class="stat-hint">Next billing: Dec 01</div>
+                <div class="stat-hint">Billing: Dec 01</div>
             </div>
         </div>
 
