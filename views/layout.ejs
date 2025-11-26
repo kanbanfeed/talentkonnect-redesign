@@ -16,10 +16,29 @@
             transition: opacity 0.2s;
             cursor: pointer;
         }
-        
-        /* Login Button Style (In case user is logged out) */
-        .nav-login-btn {
+        .btn-cta{
             background: #4f46e5;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: none; /* Hidden by default */
+        }
+        /* Login Button Style (In case user is logged out) */
+         .nav-login-btn {
+            background: #4f46e5;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: none; /* Hidden by default */
+        }
+        .btn-logout {
+             background: #4f46e5;
             color: white;
             padding: 8px 20px;
             border-radius: 20px;
@@ -61,8 +80,13 @@
 </div>
 
 
-    <a href="/login" id="header-login-btn" class="nav-login-btn">Login</a>
-</div>
+<a href="/login" id="nav-login-btn" class="btn-cta">
+                        <ion-icon name="log-in-outline"></ion-icon> Login
+                    </a>
+
+                    <a href="#" id="nav-logout-btn" onclick="logout()" class="btn-logout">
+                        <ion-icon name="log-out-outline"></ion-icon> Logout
+                    </a></div>
 
 <!-- MOBILE NAV (toggle target) -->
 <div class="mobile-nav" aria-hidden="true">
@@ -94,17 +118,24 @@
                 }
             });
 
-            // --- 2. HEADER DATA FETCH ---
+            // --- 2. HEADER DATA FETCH & BUTTON LOGIC ---
             const sessionStr = localStorage.getItem('crowbar_session');
             const userStr = localStorage.getItem('crowbar_user');
             
             const profilePill = document.getElementById('header-profile-pill');
-            const loginBtn = document.getElementById('header-login-btn');
+            const loginBtn = document.getElementById('nav-login-btn');
+            const logoutBtn = document.getElementById('nav-logout-btn'); // Get the logout button
 
             if (sessionStr && userStr) {
-                // USER IS LOGGED IN
-                loginBtn.style.display = 'none';
-                profilePill.style.display = 'flex';
+                // --- USER IS LOGGED IN ---
+                if(loginBtn) loginBtn.style.display = 'none';          // Hide Login
+                if(profilePill) profilePill.style.display = 'flex';    // Show Profile
+                
+                // FIX: Show Logout Button
+                if(logoutBtn) {
+                    logoutBtn.classList.remove('d-none-custom');
+                    logoutBtn.style.display = 'inline-flex'; 
+                }
 
                 const user = JSON.parse(userStr);
                 const SB_URL = 'https://zfxnhbymlhvukeqmsyhj.supabase.co';
@@ -126,9 +157,10 @@
                     document.getElementById('nav-user-name').innerText = user.email.split('@')[0];
                 }
             } else {
-                // USER IS LOGGED OUT
-                profilePill.style.display = 'none'; // Hide profile
-                loginBtn.style.display = 'block';   // Show Login button
+                // --- USER IS LOGGED OUT ---
+                if(profilePill) profilePill.style.display = 'none'; // Hide Profile
+                if(logoutBtn) logoutBtn.style.display = 'none';     // Hide Logout
+                if(loginBtn) loginBtn.style.display = 'inline-flex'; // Show Login
             }
         });
     </script>
@@ -161,6 +193,12 @@
       mobileNav.addEventListener('click', function(e){ e.stopPropagation(); });
     });
   })();
+
+  function logout() {
+            localStorage.removeItem('crowbar_session');
+            localStorage.removeItem('crowbar_user');
+            window.location.href = '/';
+        }
 </script>
 
 </body>
