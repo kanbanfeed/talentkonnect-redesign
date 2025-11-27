@@ -2,331 +2,344 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Messages | TalentKonnect</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+
     <style>
-        /* --- THEME VARIABLES --- */
-        :root {
-            --primary: #4f46e5;
-            --primary-light: #eef2ff;
-            --bg-gray: #f3f4f6;
-            --border-color: #e5e7eb;
-            --text-dark: #111827;
-            --text-muted: #6b7280;
+        /* --- 1. FORCE FULL WIDTH & HEIGHT --- */
+        /* This overrides the global .container from layout.ejs */
+        main.container {
+            max-width: 100% !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 20px !important;
+            height: calc(100vh - 70px); /* Fill remaining height below header */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
-        /* --- GLOBAL RESETS --- */
-        /* Adjusted to work WITH the main website header */
-        body { 
-            background: white; 
-            overflow: hidden; /* Prevents double scrollbars */
-        }
-        
-        /* --- LAYOUT --- */
-        /* We calculate height to fit exactly under the navbar (approx 76px) */
-        .messenger-layout {
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            height: calc(100vh - 76px); 
-            border-top: 1px solid var(--border-color);
+        /* On Mobile, remove padding completely for app-feel */
+        @media (max-width: 768px) {
+            main.container {
+                padding: 0 !important;
+                height: calc(100vh - 60px); /* Adjust for smaller mobile header */
+            }
         }
 
-        /* --- SIDEBAR --- */
-        .sidebar {
-            border-right: 1px solid var(--border-color);
+        /* --- 2. MESSENGER CARD LAYOUT --- */
+        .messenger-card {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            display: flex; /* Using Flex instead of Grid for better control */
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* --- SIDEBAR (Contact List) --- */
+        .msg-sidebar {
+            width: 320px; /* Fixed width on desktop */
+            border-right: 1px solid #f1f5f9;
             display: flex;
             flex-direction: column;
             background: white;
             height: 100%;
+            z-index: 10;
         }
 
-        .sidebar-header {
+        .msg-header {
             padding: 20px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid #f1f5f9;
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-        }
-
-        .sidebar-title { font-size: 1.2rem; font-weight: 800; color: var(--text-dark); margin: 0; }
-
-        .search-box { padding: 15px; }
-        .search-input {
-            width: 100%;
-            padding: 10px 15px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-            background: var(--bg-gray);
-            font-size: 0.9rem;
-        }
-
-        .contact-list { flex: 1; overflow-y: auto; }
-        
-        .contact-item {
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            transition: 0.2s;
-            border-left: 4px solid transparent;
-        }
-
-        .contact-item:hover { background: var(--bg-gray); }
-        .contact-item.active { background: var(--primary-light); border-left-color: var(--primary); }
-
-        .avatar {
-            width: 45px; height: 45px;
-            border-radius: 50%;
-            background: #e0e7ff;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: bold; color: var(--primary);
+            height: 70px;
             flex-shrink: 0;
         }
 
-        .contact-info h6 { margin: 0; font-size: 0.95rem; font-weight: 600; color: var(--text-dark); }
-        .contact-info p { margin: 0; font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
+        .msg-list {
+            flex: 1;
+            overflow-y: auto;
+        }
 
-        /* --- CHAT AREA --- */
-        .chat-area {
+        .contact-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: 0.2s;
+            border-left: 4px solid transparent;
+            align-items: center;
+        }
+        .contact-item:hover { background: #f8fafc; }
+        .contact-item.active { background: #f0f9ff; border-left-color: #6366f1; }
+
+        .avatar-circle {
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        /* --- CHAT PANEL (Right Side) --- */
+        .chat-panel {
+            flex: 1; /* Take remaining width */
             display: flex;
             flex-direction: column;
-            background: #ffffff;
+            background: #f8fafc;
             height: 100%;
+            position: relative;
         }
 
-        /* Header */
-        .chat-header {
-            padding: 15px 30px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
+        .chat-top-bar {
             height: 70px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
         }
-        .status-indicator { font-size: 0.75rem; color: #10b981; font-weight: 500; }
 
-        /* Messages Stream */
-        .messages-stream {
+        .messages-container {
             flex: 1;
-            padding: 30px;
-            background: var(--bg-gray);
+            padding: 20px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
         }
 
-        .time-divider { text-align: center; font-size: 0.75rem; color: #9ca3af; margin: 10px 0; }
-
-        .message-row { display: flex; flex-direction: column; max-width: 70%; }
-        .message-row.received { align-self: flex-start; }
-        .message-row.sent { align-self: flex-end; align-items: flex-end; }
+        /* Message Bubbles */
+        .msg-row { display: flex; flex-direction: column; max-width: 80%; }
+        .msg-row.sent { align-self: flex-end; align-items: flex-end; }
+        .msg-row.received { align-self: flex-start; align-items: flex-start; }
 
         .bubble {
             padding: 12px 18px;
-            border-radius: 16px;
+            border-radius: 18px;
             font-size: 0.95rem;
             line-height: 1.5;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .sent .bubble {
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
         }
 
         .received .bubble {
             background: white;
-            border: 1px solid var(--border-color);
-            border-bottom-left-radius: 2px;
-            color: var(--text-dark);
+            color: #1e1b4b;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
-        .sent .bubble {
-            background: var(--primary);
-            color: white;
-            border-bottom-right-radius: 2px;
-        }
+        .msg-time { font-size: 0.7rem; color: #94a3b8; margin-top: 5px; }
 
-        .msg-time {
-            font-size: 0.7rem;
-            color: #9ca3af;
-            margin-top: 5px;
-            padding: 0 5px;
-        }
-
-        /* --- INPUT AREA --- */
-        .input-area {
-            padding: 20px 30px 30px 30px; /* Padding bottom to sit nicely */
-            border-top: 1px solid var(--border-color);
+        /* Input Area */
+        .input-wrapper {
             background: white;
+            padding: 10px 15px;
+            border-top: 1px solid #e2e8f0;
             display: flex;
-            gap: 15px;
             align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
         }
 
-        .attachment-btn { border: none; background: none; color: #6b7280; font-size: 1.2rem; cursor: pointer; }
-        
-        .message-input {
+        .msg-input {
             flex: 1;
-            padding: 14px 20px;
+            padding: 12px 20px;
             border-radius: 30px;
             border: 1px solid #e2e8f0;
-            background: #f9fafb;
+            background: #f8fafc;
             outline: none;
-            transition: 0.3s;
             font-size: 0.95rem;
         }
-        .message-input:focus { background: white; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+        .msg-input:focus { background: white; border-color: #6366f1; }
 
-        .send-btn {
-            width: 48px; height: 48px;
+        .btn-send {
+            width: 45px; height: 45px;
             border-radius: 50%;
-            background: var(--primary);
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
             color: white;
             border: none;
             display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
             cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2);
+            flex-shrink: 0;
         }
-        .send-btn:hover { transform: scale(1.05); background: #4338ca; }
 
+        .back-arrow { display: none; font-size: 1.5rem; cursor: pointer; margin-right: 10px; color: #64748b; }
+
+        /* --- 3. MOBILE RESPONSIVE FIX --- */
         @media (max-width: 768px) {
-            .messenger-layout { grid-template-columns: 1fr; height: calc(100vh - 60px); }
-            .sidebar { display: none; } 
-            .chat-area { height: 100%; }
-            .input-area { padding-bottom: 80px; }
+            /* Reset Layout */
+            .messenger-card {
+                border-radius: 0;
+                border: none;
+                box-shadow: none;
+            }
+
+            /* Stack Elements (Show one at a time) */
+            .msg-sidebar {
+                width: 100%; /* Full width */
+                display: flex;
+                flex: 1;
+            }
+
+            .chat-panel {
+                width: 100%; /* Full width */
+                display: none; /* Hidden by default */
+                position: absolute; /* Cover the sidebar */
+                top: 0; left: 0;
+                z-index: 20;
+            }
+
+            /* Toggle State: Chat Active */
+            .messenger-card.show-chat .msg-sidebar {
+                display: none;
+            }
+            .messenger-card.show-chat .chat-panel {
+                display: flex;
+            }
+
+            .back-arrow { display: block; }
+            .msg-input { font-size: 16px; } /* Prevents iOS zoom */
         }
     </style>
 </head>
 <body>
 
-<div class="messenger-layout">
+<div class="messenger-card" id="mainCard">
     
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <h2 class="sidebar-title">Messages</h2>
-            <i class="bi bi-pencil-square fs-5 text-primary" style="cursor: pointer;"></i>
+    <aside class="msg-sidebar">
+        <div class="msg-header">
+            <h3 style="margin:0; font-weight:800; color:#1e1b4b;">Messages</h3>
+            <ion-icon name="create-outline" style="font-size:1.4rem; color:#6366f1;"></ion-icon>
         </div>
         
-        <div class="search-box">
-            <input type="text" class="search-input" placeholder="Search conversations...">
-        </div>
+        <div class="msg-list">
+            <div class="contact-item active" onclick="openChat('TechCorp HR', 'TC', '#e0e7ff', '#4338ca')">
+                <div class="avatar-circle" style="background:#e0e7ff; color:#4338ca;">TC</div>
+                <div>
+                    <div style="font-weight:700; color:#1e1b4b;">TechCorp HR</div>
+                    <div style="font-size:0.85rem; color:#64748b;">Are you available tomorrow?</div>
+                </div>
+            </div>
 
-        <div class="contact-list">
-            <div class="contact-item active">
-                <div class="avatar">TC</div>
-                <div class="contact-info">
-                    <h6>TechCorp HR</h6>
-                    <p>Great. Are you available for...</p>
-                </div>
-            </div>
-            <div class="contact-item">
-                <div class="avatar" style="background: #f0fdf4; color: #16a34a;">GD</div>
-                <div class="contact-info">
-                    <h6>GreenDesign Studio</h6>
-                    <p>Files received. Thanks!</p>
-                </div>
-            </div>
-            <div class="contact-item">
-                <div class="avatar" style="background: #fef2f2; color: #ef4444;">MJ</div>
-                <div class="contact-info">
-                    <h6>Mark Johnson</h6>
-                    <p>Can we reschedule?</p>
+            <div class="contact-item" onclick="openChat('Sarah Designer', 'SD', '#dcfce7', '#15803d')">
+                <div class="avatar-circle" style="background:#dcfce7; color:#15803d;">SD</div>
+                <div>
+                    <div style="font-weight:700; color:#1e1b4b;">Sarah Designer</div>
+                    <div style="font-size:0.85rem; color:#64748b;">Files have been sent.</div>
                 </div>
             </div>
         </div>
     </aside>
 
-    <main class="chat-area">
-        <div class="chat-header">
-            <div class="d-flex align-items-center gap-3">
-                <div class="avatar">TC</div>
-                <div>
-                    <h6 class="mb-0 fw-bold">TechCorp HR</h6>
-                    <div class="status-indicator">● Online</div>
+    <main class="chat-panel">
+        
+        <div class="chat-top-bar">
+            <div style="display:flex; align-items:center; gap:5px;">
+                <ion-icon name="arrow-back" class="back-arrow" onclick="closeChat()"></ion-icon>
+                <div class="avatar-circle" id="chat-avatar-el" style="background:#e0e7ff; color:#4338ca; width:35px; height:35px; font-size:0.85rem;">TC</div>
+                <div style="margin-left: 10px;">
+                    <div id="chat-name-el" style="font-weight:700; color:#1e1b4b; line-height:1.1; font-size: 0.95rem;">TechCorp HR</div>
+                    <div style="font-size:0.7rem; color:#10b981; display:flex; align-items:center; gap:3px;">
+                        <span style="width:5px; height:5px; background:#10b981; border-radius:50%;"></span> Online
+                    </div>
                 </div>
             </div>
-            <div class="d-flex gap-3 text-muted">
-                <i class="bi bi-telephone fs-5" style="cursor: pointer;"></i>
-                <i class="bi bi-camera-video fs-5" style="cursor: pointer;"></i>
-                <i class="bi bi-three-dots-vertical fs-5" style="cursor: pointer;"></i>
-            </div>
+            <ion-icon name="ellipsis-vertical" style="color:#94a3b8; cursor:pointer; font-size:1.2rem;"></ion-icon>
         </div>
-        <div class="messages-stream" id="messageBox">
-            <div class="time-divider">Today</div>
 
-            <div class="message-row received">
-                <div class="bubble">
-                    Hi Alex, we reviewed your portfolio on TalentKonnect. It looks impressive!
-                </div>
+        <div class="messages-container" id="messagesList">
+            <div style="text-align:center; font-size:0.8rem; color:#cbd5e1; margin-bottom:10px;">Today</div>
+            
+            <div class="msg-row received">
+                <div class="bubble">Hi! We reviewed your profile on TalentKonnect. Impressive work!</div>
                 <div class="msg-time">10:30 AM</div>
             </div>
 
-            <div class="message-row sent">
-                <div class="bubble">
-                    Thanks! I appreciate that. I'm very interested in the Senior Dev role.
-                </div>
+            <div class="msg-row sent">
+                <div class="bubble">Thanks! I appreciate that. I'm actively looking for new gigs.</div>
                 <div class="msg-time">10:32 AM</div>
             </div>
-
-            <div class="message-row received">
-                <div class="bubble">
-                    Great. Are you available for a quick sync tomorrow at 10 AM EST?
-                </div>
-                <div class="msg-time">10:35 AM</div>
-            </div>
         </div>
 
-        <div class="input-area">
-            <button class="attachment-btn"><i class="bi bi-paperclip"></i></button>
-            <input type="text" id="msgInput" class="message-input" placeholder="Type a message..." onkeypress="handleKey(event)">
-            <button class="send-btn" onclick="sendMessage()">
-                <i class="bi bi-send-fill"></i>
+        <div class="input-wrapper">
+            <input type="text" class="msg-input" id="messageInput" placeholder="Type a message..." onkeypress="handleEnter(event)">
+            <button class="btn-send" onclick="sendMessage()">
+                <ion-icon name="send"></ion-icon>
             </button>
         </div>
-    </main>
 
+    </main>
 </div>
 
 <script>
-    const msgBox = document.getElementById('messageBox');
-    msgBox.scrollTop = msgBox.scrollHeight;
+    const mainCard = document.getElementById('mainCard');
+    const msgList = document.getElementById('messagesList');
+    const msgInput = document.getElementById('messageInput');
+
+    // Scroll to bottom on load
+    scrollToBottom();
 
     function sendMessage() {
-        const input = document.getElementById('msgInput');
-        const text = input.value.trim();
-
-        if(text) {
-            const now = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-            
-            const msgDiv = document.createElement('div');
-            msgDiv.className = 'message-row sent';
-            msgDiv.innerHTML = `
-                <div class="bubble">${text}</div>
-                <div class="msg-time">${now}</div>
-            `;
-
-            msgBox.appendChild(msgDiv);
-            msgBox.scrollTop = msgBox.scrollHeight;
-            input.value = '';
-
-            setTimeout(() => {
-                const replyDiv = document.createElement('div');
-                replyDiv.className = 'message-row received';
-                replyDiv.innerHTML = `
-                    <div class="bubble">Got it! Looking forward to it.</div>
-                    <div class="msg-time">${now}</div>
-                `;
-                msgBox.appendChild(replyDiv);
-                msgBox.scrollTop = msgBox.scrollHeight;
-            }, 2000);
-        }
+        const text = msgInput.value.trim();
+        if (!text) return;
+        addBubble(text, 'sent');
+        msgInput.value = ''; 
+        setTimeout(() => {
+            addBubble("That sounds great! Let's schedule a call.", 'received');
+        }, 1500);
     }
 
-    function handleKey(e) {
-        if(e.key === 'Enter') sendMessage();    
+    function addBubble(text, type) {
+        const div = document.createElement('div');
+        div.className = `msg-row ${type}`;
+        const now = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        div.innerHTML = `<div class="bubble">${text}</div><div class="msg-time">${now}</div>`;
+        msgList.appendChild(div);
+        scrollToBottom();
+    }
+
+    function scrollToBottom() {
+        msgList.scrollTop = msgList.scrollHeight;
+    }
+
+    function handleEnter(e) {
+        if (e.key === 'Enter') sendMessage();
+    }
+
+    // --- MOBILE NAVIGATION ---
+    function openChat(name, initials, bg, color) {
+        document.getElementById('chat-name-el').innerText = name;
+        const av = document.getElementById('chat-avatar-el');
+        av.innerText = initials;
+        av.style.background = bg;
+        av.style.color = color;
+        
+        mainCard.classList.add('show-chat');
+        scrollToBottom();
+    }
+
+    function closeChat() {
+        mainCard.classList.remove('show-chat');
     }
 </script>
+
 </body>
 </html>
