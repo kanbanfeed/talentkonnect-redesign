@@ -953,3 +953,72 @@ a { text-decoration: none; color: inherit; transition: 0.2s ease; }
         margin-top: 5px;
     }
 }
+
+/* --- ECO-STYLE FOOTER --- */
+.site-footer {
+    background-color: #020617; /* Deepest Slate/Black */
+    padding: 60px 0;
+    margin-top: auto;
+    border-top: 1px solid #1e293b;
+    color: white;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Handles mobile stacking */
+    gap: 30px;
+}
+
+/* Left Side */
+.footer-brand h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.footer-brand p {
+    color: #94a3b8; /* Muted Slate */
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* Right Side */
+.footer-network {
+    text-align: right;
+}
+
+.network-tag {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #e2e8f0;
+    margin-bottom: 5px;
+}
+
+.text-gold {
+    color: #f59e0b; /* Crowbar Gold */
+}
+
+.copyright {
+    color: #64748b; /* Darker grey for copyright */
+    font-size: 0.85rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+        align-items: center; /* Center everything */
+    }
+    
+    .footer-network {
+        text-align: center;
+    }
+}
