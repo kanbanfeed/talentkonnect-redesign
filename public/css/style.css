@@ -524,3 +524,432 @@ a { text-decoration: none; color: inherit; transition: 0.2s ease; }
     width: 100%; padding: 14px; border-radius: 12px; transition: 0.2s;
 }
 .form-input:focus { background: white; border-color: var(--cb-purple); box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1); }
+/* --- RESPONSIVE HOME PAGE STYLES --- */
+
+/* 1. Hero Layout */
+.hero-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+    padding: 60px 0;
+}
+
+.hero-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+.hero-visuals {
+    flex: 1;
+    position: relative;
+    height: 450px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 2. Typography & Elements */
+.hero-title {
+    font-size: 4.2rem;
+    line-height: 1.1;
+    margin-bottom: 25px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    color: #1e1b4b;
+}
+
+.hero-desc {
+    font-size: 1.25rem;
+    color: #64748b;
+    margin-bottom: 40px;
+    max-width: 90%;
+}
+
+.hero-btns {
+    display: flex;
+    gap: 15px;
+}
+
+/* 3. Floating Cards */
+.float-card-1 {
+    position: absolute;
+    top: 10%;
+    right: 5%;
+    width: 280px;
+    z-index: 2;
+    transform: rotate(6deg);
+    border-radius: 24px;
+}
+
+.float-card-2 {
+    position: absolute;
+    top: 50%;
+    right: 25%;
+    width: 320px;
+    z-index: 1;
+    border-radius: 24px;
+}
+
+/* --- MOBILE OVERRIDES (Max Width 768px) --- */
+@media (max-width: 768px) {
+    /* Stack content vertically */
+    .hero-grid {
+        flex-direction: column;
+        padding: 30px 0;
+        gap: 40px;
+        overflow-x: hidden; /* Prevent horizontal scroll */
+    }
+
+    /* Center text */
+    .hero-content {
+        text-align: center;
+        min-width: 100%;
+    }
+
+    .hero-title {
+        font-size: 2.5rem; /* Smaller font for mobile */
+    }
+
+    .hero-desc {
+        font-size: 1rem;
+        margin: 0 auto 30px auto; /* Center align */
+    }
+
+    .hero-btns {
+        justify-content: center;
+    }
+
+    /* Adjust Visuals Container */
+    .hero-visuals {
+        width: 100%;
+        height: 350px; /* Shorter height */
+    }
+
+    /* Resize & Re-position Cards */
+    .float-card-1 {
+        width: 220px;
+        right: 50%;
+        margin-right: -110px; /* Center horizontally */
+        top: 0;
+    }
+
+    .float-card-2 {
+        width: 260px;
+        right: 50%;
+        margin-right: -130px; /* Center horizontally */
+        top: 140px;
+    }
+    
+    /* Fix Header Overflow */
+    .profile-pill {
+        display: none !important; /* Hide profile pill on mobile to save space */
+    }
+    #nav-logout-btn {
+        display: none !important; /* Hide logout button on header */
+    }
+}
+
+/* --- RESPONSIVE FORMS & LISTS --- */
+
+/* Page Headers */
+.page-header { text-align: center; margin-bottom: 30px; }
+.page-title { font-size: 2rem; margin-bottom: 10px; font-weight: 800; color: #1e1b4b; }
+.page-subtitle { color: #64748b; }
+
+/* Search Bar (Apply Page) */
+.search-card {
+    padding: 15px; 
+    margin-bottom: 30px; 
+    display: flex; 
+    gap: 10px; 
+    align-items: center;
+}
+.search-input {
+    border: none; 
+    background: transparent; 
+    padding: 10px; 
+    font-size: 1rem; 
+    flex: 1; 
+    width: 100%;
+}
+
+/* Job Cards (Apply Page) */
+.job-card {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-between; 
+    align-items: center;
+    margin-bottom: 20px;
+    transition: 0.2s;
+}
+.job-icon {
+    width: 60px; height: 60px; 
+    background: linear-gradient(135deg, #e0e7ff 0%, #ebf4ff 100%); 
+    border-radius: 12px; 
+    display: flex; align-items: center; justify-content: center; 
+    color: #4f46e5; font-size: 1.5rem;
+    flex-shrink: 0; /* Prevents squashing */
+}
+.job-details { display: flex; gap: 20px; align-items: center; }
+.job-actions { text-align: right; }
+
+/* --- MOBILE OVERRIDES (Max Width 768px) --- */
+@media (max-width: 768px) {
+    /* 1. Post Job Form */
+    .form-row {
+        grid-template-columns: 1fr; /* Stack inputs vertically */
+        gap: 0; /* Let form-group handle margin */
+    }
+    
+    .page-title { font-size: 1.6rem; }
+
+    /* 2. Apply Job - Search Bar */
+    .search-card {
+        flex-direction: column; /* Stack input and button */
+        padding: 20px;
+    }
+    .search-input {
+        width: 100%;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 10px;
+    }
+    .search-card .btn { width: 100%; }
+
+    /* 3. Apply Job - Job List Cards */
+    .job-card {
+        flex-direction: column; /* Stack top to bottom */
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .job-details {
+        width: 100%;
+    }
+
+    .job-actions {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 12px;
+        margin-top: 5px;
+    }
+    
+    /* Hide icon background on mobile if it takes too much space, or adjust size */
+    .job-icon { width: 50px; height: 50px; font-size: 1.2rem; }
+}
+
+/* --- DASHBOARD STYLES --- */
+
+/* Wrapper */
+.dashboard-wrapper {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px 60px;
+}
+
+/* 1. Hero Welcome */
+.hero-welcome {
+    background: white; 
+    border: 1px solid white;
+    border-radius: 24px;
+    padding: 40px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.hero-title { font-size: 2rem; font-weight: 800; color: #1e1b4b; margin-bottom: 5px; }
+.hero-sub { color: #64748b; font-size: 1.1rem; margin: 0; }
+
+/* Actions (Logout/Profile) */
+.hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #f8fafc;
+    padding: 8px 8px 8px 20px;
+    border-radius: 50px;
+}
+.profile-info { text-align: right; line-height: 1.2; margin-right: 5px; }
+.profile-email { font-size: 0.85rem; font-weight: 700; color: #1e1b4b; }
+.profile-label { font-size: 0.7rem; color: #64748b; text-transform: uppercase; }
+
+.btn-logout-dash {
+    background: #fee2e2;
+    color: #ef4444;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.85rem;
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+}
+.btn-logout-dash:hover { background: #ef4444; color: white; }
+
+/* 2. Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-bottom: 50px;
+}
+
+.stat-card {
+    background: white;
+    padding: 30px;
+    border-radius: 24px;
+    border: 1px solid white;
+    transition: 0.3s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+.stat-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+
+.card-green { border-bottom: 4px solid #10b981; }
+.card-gold { border-bottom: 4px solid #f59e0b; }
+.card-blue { border-bottom: 4px solid #6366f1; }
+
+.stat-icon-box {
+    width: 50px; height: 50px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+.icon-green { background: #ecfdf5; color: #10b981; }
+.icon-gold { background: #fffbeb; color: #f59e0b; }
+.icon-blue { background: #e0e7ff; color: #6366f1; }
+
+.stat-label { font-size: 0.8rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
+.stat-value { font-size: 2.4rem; font-weight: 800; color: #1e1b4b; margin: 5px 0; letter-spacing: -1px; }
+.stat-hint { font-size: 0.85rem; color: #64748b; display: flex; align-items: center; gap: 5px; }
+
+/* 3. Activity Table */
+.activity-section h4 { font-weight: 800; margin-bottom: 25px; color: #1e1b4b; font-size: 1.2rem; }
+
+.activity-table {
+    background: white;
+    border: 1px solid white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+
+.activity-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 25px 35px;
+    border-bottom: 1px solid #f1f5f9;
+    align-items: center;
+}
+.activity-row:last-child { border-bottom: none; }
+.activity-header { background: #f8fafc; font-weight: 700; font-size: 0.8rem; color: #64748b; text-transform: uppercase; }
+
+.job-title { font-weight: 700; color: #1e1b4b; font-size: 1rem; }
+.job-company { font-size: 0.85rem; color: #64748b; }
+.status-badge { padding: 6px 14px; border-radius: 30px; font-size: 0.75rem; font-weight: 700; display: inline-block; }
+.status-pending { background: #fff7ed; color: #ea580c; }
+
+/* Loading Screen */
+#loading-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: white; z-index: 2000; display: flex; align-items: center; justify-content: center; }
+
+/* --- MOBILE OVERRIDES FOR DASHBOARD --- */
+@media(max-width: 768px) {
+    /* Stack Hero Section */
+    .hero-welcome {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+        padding: 30px 20px;
+    }
+    
+    .hero-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    /* Stack Stats Grid */
+    .stats-grid {
+        grid-template-columns: 1fr; /* One column on mobile */
+        gap: 20px;
+    }
+
+    /* Adjust Activity Table */
+    .activity-header { display: none; } /* Hide header on mobile */
+    
+    .activity-row {
+        grid-template-columns: 1fr; /* Stack content */
+        gap: 15px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .activity-row .text-end { text-align: center; }
+}
+/* --- MOBILE DASHBOARD FIX --- */
+@media (max-width: 768px) {
+    
+    /* 1. Stack the Main Welcome Box */
+    .hero-welcome {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+        padding: 25px 20px;
+    }
+
+    /* 2. Fix the Long Email & Button Issue */
+    .hero-actions {
+        width: 100%;
+        flex-direction: column; /* Stack Email above Button */
+        gap: 15px;
+        padding: 20px;
+        height: auto;
+    }
+
+    .profile-info {
+        width: 100%;
+        text-align: center;
+        margin-right: 0;
+        overflow: hidden; /* Keeps long emails inside */
+    }
+
+    .profile-email {
+        display: block;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; /* Adds "..." if email is too long */
+    }
+
+    .btn-logout-dash {
+        width: 100%; /* Full width button */
+        justify-content: center;
+    }
+
+    /* 3. Stack the Stats Cards (Earnings, Credits, Plan) */
+    .stats-grid {
+        grid-template-columns: 1fr; /* 1 column instead of 3 */
+        gap: 15px;
+    }
+
+    /* 4. Fix Recent Applications Table */
+    .activity-header { display: none; } /* Hide header row */
+    
+    .activity-row {
+        grid-template-columns: 1fr; /* Stack content vertically */
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .activity-row .text-end { 
+        text-align: center; 
+        margin-top: 5px;
+    }
+}

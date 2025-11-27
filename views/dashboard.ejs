@@ -1,135 +1,3 @@
-<style>
-    /* Layout */
-    .dashboard-wrapper {
-        max-width: 1100px;
-        margin: 40px auto;
-        padding: 0 20px 60px;
-    }
-
-    /* 1. HERO WELCOME SECTION */
-    .hero-welcome {
-        background: white; 
-        border: 1px solid white;
-        border-radius: 24px; /* Matches screenshots */
-        padding: 40px;
-        margin-bottom: 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    }
-
-    .hero-title { font-size: 2rem; font-weight: 800; color: #1e1b4b; letter-spacing: -1px; margin-bottom: 5px; }
-    .hero-sub { color: #64748b; font-size: 1.1rem; margin: 0; }
-
-    /* Logout / Profile Section */
-    .hero-actions {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        background: #f8fafc;
-        padding: 8px 8px 8px 20px;
-        border-radius: 50px;
-    }
-
-    .profile-info { text-align: right; line-height: 1.2; margin-right: 5px; }
-    .profile-email { font-size: 0.85rem; font-weight: 700; color: #1e1b4b; }
-    .profile-label { font-size: 0.7rem; color: #64748b; text-transform: uppercase; }
-
-    .btn-logout {
-        background: #fee2e2;
-        color: #ef4444;
-        padding: 10px 20px;
-        border-radius: 30px;
-        font-weight: 600;
-        text-decoration: none;
-        font-size: 0.85rem;
-        border: none;
-        cursor: pointer;
-        display: flex; align-items: center; gap: 6px;
-    }
-    .btn-logout:hover { background: #ef4444; color: white; }
-
-    /* 2. STATS GRID */
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 25px;
-        margin-bottom: 50px;
-    }
-
-    .stat-card {
-        background: white;
-        padding: 30px;
-        border-radius: 24px;
-        border: 1px solid white;
-        transition: 0.3s;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-    }
-    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
-
-    .card-green { border-bottom: 4px solid #10b981; }
-    .card-gold { border-bottom: 4px solid #f59e0b; }
-    .card-blue { border-bottom: 4px solid #6366f1; }
-
-    .stat-icon-box {
-        width: 50px; height: 50px;
-        border-radius: 14px;
-        display: flex; align-items: center; justify-content: center;
-        margin-bottom: 20px;
-        font-size: 1.4rem;
-    }
-
-    .icon-green { background: #ecfdf5; color: #10b981; }
-    .icon-gold { background: #fffbeb; color: #f59e0b; }
-    .icon-blue { background: #e0e7ff; color: #6366f1; }
-
-    .stat-label { font-size: 0.8rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
-    .stat-value { font-size: 2.4rem; font-weight: 800; color: #1e1b4b; margin: 5px 0; letter-spacing: -1px; }
-    .stat-hint { font-size: 0.85rem; color: #64748b; display: flex; align-items: center; gap: 5px; }
-
-    /* 3. ACTIVITY TABLE */
-    .activity-section h4 { font-weight: 800; margin-bottom: 25px; color: #1e1b4b; font-size: 1.2rem; }
-    
-    .activity-table {
-        background: white;
-        border: 1px solid white;
-        border-radius: 24px;
-        overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-    }
-
-    .activity-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        padding: 25px 35px;
-        border-bottom: 1px solid #f1f5f9;
-        align-items: center;
-    }
-    .activity-row:last-child { border-bottom: none; }
-    .activity-header { background: #f8fafc; font-weight: 700; font-size: 0.8rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
-    
-    .job-title { font-weight: 700; color: #1e1b4b; font-size: 1rem; }
-    .job-company { font-size: 0.85rem; color: #64748b; }
-    
-    .status-badge {
-        padding: 6px 14px; border-radius: 30px; font-size: 0.75rem; font-weight: 700;
-        display: inline-block;
-    }
-    .status-pending { background: #fff7ed; color: #ea580c; }
-
-    /* Loading */
-    #loading-screen { position: fixed; top:0; left:0; width:100%; height:100%; background: white; z-index: 2000; display: flex; align-items: center; justify-content: center; }
-
-    /* Mobile */
-    @media(max-width: 768px) {
-        .stats-grid { grid-template-columns: 1fr; }
-        .hero-welcome { flex-direction: column; text-align: center; gap: 20px; }
-        .hero-actions { width: 100%; justify-content: space-between; }
-        .activity-row { grid-template-columns: 1fr; gap: 10px; text-align: center; }
-    }
-</style>
-
 <div id="loading-screen">
     <div class="spinner-border text-primary" role="status"></div>
 </div>
@@ -148,7 +16,7 @@
                     <div class="profile-email" id="user-email">loading...</div>
                     <div class="profile-label">Crowbar ID</div>
                 </div>
-                <button onclick="logout()" class="btn-logout">
+                <button onclick="logout()" class="btn-logout-dash">
                     <ion-icon name="log-out-outline"></ion-icon> Sign Out
                 </button>
             </div>
@@ -187,7 +55,7 @@
             <h4>Recent Applications</h4>
             
             <div class="activity-table">
-                <div class="activity-row activity-header d-none d-md-grid">
+                <div class="activity-row activity-header">
                     <div>Job / Company</div>
                     <div class="text-center">Applied Date</div>
                     <div class="text-end">Status</div>

@@ -1,33 +1,33 @@
 <div style="max-width: 800px; margin: 0 auto;">
-    <div style="text-align: center; margin-bottom: 40px;">
-        <h2>Find Your Next Challenge</h2>
-        <p style="color: var(--text-muted);">Browse gigs, complete tasks, and get paid.</p>
+    <div class="page-header">
+        <h2 class="page-title">Find Your Next Challenge</h2>
+        <p class="page-subtitle">Browse Jobs, complete tasks, and get paid.</p>
     </div>
 
-    <div class="card" style="padding: 15px; margin-bottom: 30px; display: flex; gap: 10px;">
-        <ion-icon name="search-outline" style="font-size: 1.5rem; color: #94a3b8; align-self: center; margin-left: 10px;"></ion-icon>
-        <input type="text" placeholder="Search by skill, category or company..." style="border: none; background: transparent; padding: 10px; font-size: 1rem;">
+    <div class="card search-card">
+        <ion-icon name="search-outline" style="font-size: 1.5rem; color: #94a3b8; margin-left: 5px;"></ion-icon>
+        <input type="text" class="search-input" placeholder="Search by skill, category or company...">
         <button class="btn btn-primary">Search</button>
     </div>
 
     <div style="display: flex; flex-direction: column; gap: 20px;">
         <% jobs.forEach(job => { %>
-            <div class="card" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;">
-                <div style="display: flex; gap: 20px; align-items: center;">
-                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #e0e7ff 0%, #ebf4ff 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #4f46e5; font-size: 1.5rem;">
+            <div class="card job-card">
+                <div class="job-details">
+                    <div class="job-icon">
                         <ion-icon name="briefcase"></ion-icon>
                     </div>
                     <div>
-                        <h3 style="font-size: 1.1rem; margin-bottom: 6px;"><%= job.title %></h3>
-                        <div style="display: flex; gap: 10px;">
+                        <h3 style="font-size: 1.1rem; margin-bottom: 6px; font-weight: 700;"><%= job.title %></h3>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                             <% job.tags.forEach(tag => { %>
-                                <span class="tag tag-purple"><%= tag %></span>
+                                <span style="background: #f3f4f6; color: #4b5563; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600;"><%= tag %></span>
                             <% }) %>
                         </div>
                     </div>
                 </div>
-                <div style="text-align: right;">
-                    <div style="font-weight: 800; font-size: 1.2rem; color: var(--text-main); margin-bottom: 8px;"><%= job.reward %></div>
+                <div class="job-actions">
+                    <div style="font-weight: 800; font-size: 1.2rem; color: #1e1b4b; margin-bottom: 8px;"><%= job.reward %></div>
                     <button class="btn btn-outline" style="padding: 8px 20px; font-size: 0.85rem;">Details</button>
                 </div>
             </div>
